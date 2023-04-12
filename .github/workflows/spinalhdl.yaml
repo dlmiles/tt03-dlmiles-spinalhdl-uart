@@ -48,8 +48,8 @@ jobs:
       shell: bash
       run: |
         mkdir dist
-        find spinalhdl/hw/gen -name "*.v" -or -name "*.vhd*" -exec cp -av {} dist/ \;
-        find spinalhdl/simWorkspace -name "*.vcd" -or -name "*.fst" -exec cp -av {} dist/ \;
+        find spinalhdl/hw/gen \( -name "*.v" -or -name "*.vhd*" \) -exec cp -av {} dist/ \;
+        find spinalhdl/simWorkspace \( -name "*.vcd" -or -name "*.fst" \) -exec cp -av {} dist/ \;
 
     - name: Upload - perform
       uses: actions/upload-artifact@v3
