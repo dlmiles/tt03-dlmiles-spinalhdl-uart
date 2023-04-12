@@ -52,7 +52,7 @@ jobs:
         find spinalhdl/simWorkspace -name "*.vcd" -or -name "*.fst" -exec cp -av {} dist/ \;
 
     - name: Upload - perform
-        uses: actions/upload-artifact@v3
-        with:
-          name: spinalhdl-generated
-          path: dist/
+      uses: actions/upload-artifact@v3
+      with:
+        name: spinalhdl-generated
+        path: dist/
