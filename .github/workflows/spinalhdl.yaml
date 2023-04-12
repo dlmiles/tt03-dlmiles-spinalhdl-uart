@@ -30,19 +30,19 @@ jobs:
         java-version: 17
 
     - name: 'SBT: compile +test'
-      run: sbt compile +test
+      run: cd spinalhdl && sbt compile +test
 
     - name: 'SBT: Simulate'
-      run: sbt "runMain projectname.MyTopLevelSim"
+      run: cd spinalhdl && sbt "runMain projectname.MyTopLevelSim"
     
     - name: 'SBT: Formal Verification'
-      run: sbt "runMain projectname.MyTopLevelFormal"
+      run: cd spinalhdl && sbt "runMain projectname.MyTopLevelFormal"
     
     - name: 'SBT: Generate Verilog'
-      run: sbt "runMain projectname.MyTopLevelVerilog"
+      run: cd spinalhdl && sbt "runMain projectname.MyTopLevelVerilog"
 
     - name: 'SBT: Generate VHDL'
-      run: sbt "runMain projectname.MyTopLevelVhdl"
+      run: cd spinalhdl && sbt "runMain projectname.MyTopLevelVhdl"
 
     - name: Upload - prepare
       shell: bash
