@@ -1,13 +1,21 @@
 name: docs
-# either manually started, or on a schedule
-on: [ push, workflow_dispatch ]
+# either manually started, or after spinalhdl runs
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["spinalhdl"]
+    branches: [main]
+    types:
+      - completed
+
 permissions:
   contents: write
   pages: write
   id-token: write
+
 jobs:
   docs:
-    needs: spinalhdl
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     # ubuntu
     runs-on: ubuntu-latest
     steps:

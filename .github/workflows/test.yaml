@@ -1,15 +1,33 @@
 name: test
-# either manually started, or on a schedule
-on: [ push, workflow_dispatch ]
+# either manually started, or after spinalhdl runs
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["spinalhdl"]
+    branches: [main]
+    types:
+      - completed
+
 jobs:
   test:
-    needs: spinalhdl
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     # ubuntu
     runs-on: ubuntu-latest
     steps:
     # need the repo checked out
     - name: checkout repo
       uses: actions/checkout@v3
+
+    - name: Download - spinalhdl-generated
+      uses: actions/download-artifact@v3
+      with:
+        name: spinalhdl-generated
+        path: spinalhdl-generated/
+
+    - name: Prepare - spinalhdl-generated
+      shell: bash
+      run: |
+        cp -av spinalhdl-generated/*.v src/
 
     # install oss fpga tools
     - name: install oss-cad-suite

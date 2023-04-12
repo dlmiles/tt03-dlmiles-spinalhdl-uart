@@ -1,12 +1,21 @@
 name: gds
-# either manually started, or on a schedule
-on: [ push, workflow_dispatch ]
+# either manually started, or after spinalhdl runs
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["spinalhdl"]
+    branches: [main]
+    types:
+      - completed
+
 permissions:
   contents: write
   pages: write
   id-token: write
+
 jobs:
   gds:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     env:
         OPENLANE_TAG:           2023.02.14
         OPENLANE_IMAGE_NAME:    efabless/openlane:4cd0986b3ae550cdf7a6d0fba4e0657012f635d8-amd64
@@ -14,7 +23,6 @@ jobs:
         PDK_ROOT:               /home/runner/pdk
         PDK:                    sky130A
 
-    needs: spinalhdl
     # ubuntu
     runs-on: ubuntu-latest
     steps:
