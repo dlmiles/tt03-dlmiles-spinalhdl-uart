@@ -3,6 +3,7 @@ name: test
 on: [ push, workflow_dispatch ]
 jobs:
   test:
+    needs: spinalhdl
     # ubuntu
     runs-on: ubuntu-latest
     steps:

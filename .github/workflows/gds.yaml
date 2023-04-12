@@ -14,6 +14,7 @@ jobs:
         PDK_ROOT:               /home/runner/pdk
         PDK:                    sky130A
 
+    needs: spinalhdl
     # ubuntu
     runs-on: ubuntu-latest
     steps:
