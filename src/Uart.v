@@ -208,7 +208,7 @@ module Uart (
   assign when_Uart_l352 = (cmd == 2'b10);
   assign when_Uart_l381 = 1'b1;
   assign when_Uart_l383 = (samplingTicker_counter == 5'h00);
-  assign samplingTick = 1'b0;
+  assign samplingTick = samplingTicker_tick;
   assign sampler_synchroniser = rxd_buffercc_io_dataOut;
   assign sampler_samples_0 = sampler_synchroniser;
   always @(*) begin
