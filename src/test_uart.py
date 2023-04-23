@@ -185,7 +185,11 @@ async def test_uart(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
-    report_resolvable(dut, 'initial ')
+    depth = None
+    if 'GL_TEST' in os.environ:
+        depth = 1
+
+    report_resolvable(dut, 'initial ', depth=depth)
 
     await ClockCycles(dut.clk, 1)
     dut.in7.value = 0
@@ -240,9 +244,6 @@ async def test_uart(dut):
     ele = design_element(dut, 'dut.sim_reset')
     print("F ele={} {}".format(try_path(ele), try_value(ele)))
 
-    depth = None
-    if 'GL_TEST' in os.environ:
-        depth = 1
     report_resolvable(dut, depth=depth)
 
     # Perform reset sequence
