@@ -14,7 +14,8 @@ module async_reset_ctrl (
     // ifdef SIMULATOR
     // This input is provided to allow the simulator to put the state X into a
     //  none X state at startup.  Ideally we'd like this to be 0,1,random.
-,   input			sim_reset
+,   input			sim_resetn
+,   input			sim_set
 //`endif
 //`endif
 );
@@ -57,7 +58,9 @@ module async_reset_ctrl (
     wire reset;		// net exists for sim_reset connection
 //`ifdef COCOTB_SIM
 //`ifndef GL_TEST
-    assign reset = !sim_reset & dff3q_inverted;	// COCOTB_SIM && !GL_TEST
+    assign reset = sim_resetn & dff3q_inverted;	// COCOTB_SIM && !GL_TEST
+    wire set;
+    assign set = sim_set | rs_reset_priority_inverted;
 //`else
 //    assign reset = dff3q_inverted;		// COCOTB_SIM && GL_TEST
 //`endif
@@ -68,9 +71,10 @@ module async_reset_ctrl (
     // using dff3q_inverted instead of dff3q as it is sr_latch_nand so active low
 
     sr_latch_nand sr_latch1 (
-      .s  (rs_reset_priority_inverted),
-      .r  (reset),		// dff3q_inverted
-      .q  (rs1q)
+      .s   (set),		// rs_reset_priority_inverted
+      .r   (reset),		// dff3q_inverted
+      .clr (sim_resetn),
+      .q   (rs1q)
     );
 
     assign reset_out = dff3q;

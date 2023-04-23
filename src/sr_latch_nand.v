@@ -32,6 +32,7 @@ module sr_latch_nand (
     output		qn,
     input		r,
     input		s
+,   input		clr	// active low
 );
 
     // SR-latch / sr_latch_nand
@@ -62,7 +63,7 @@ module sr_latch_nand (
     // SR latch NAND
     wire q_int, qn_int;
     assign #1 q_int = ~(s & qn_int);		// NAND
-    assign #1 qn_int = ~(r & q_int);		// NAND
+    assign #1 qn_int = ~(r & q_int & clr);	// NAND
     assign q = q_int;
     assign qn = qn_int;
 

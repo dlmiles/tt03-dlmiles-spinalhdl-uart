@@ -148,7 +148,7 @@ module Uart (
   `endif
 
   assign io_gatedTxdStopBitSupport = 1'b0;
-  assign cmd = io_in7[2 : 1];
+  assign cmd = io_in7[1 : 0];
   assign rxd = io_in7[6];
   always @(*) begin
     if(modeData7) begin
@@ -208,7 +208,7 @@ module Uart (
   end
 
   assign when_Uart_l342 = (cmd == 2'b01);
-  assign when_Uart_l350 = (io_in7[6 : 2] == 5'h18);
+  assign when_Uart_l350 = (io_in7[6 : 5] == 2'b11);
   assign when_Uart_l356 = (cmd == 2'b10);
   assign when_Uart_l382 = 1'b1;
   assign when_Uart_l384 = (samplingTicker_counter == 5'h00);

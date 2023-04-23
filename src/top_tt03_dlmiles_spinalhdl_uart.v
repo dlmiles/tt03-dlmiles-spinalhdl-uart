@@ -26,31 +26,47 @@ module top_tt03_dlmiles_spinalhdl_uart (
     wire sync_reset;
     wire async_reset;
 
-    reg sim_reset;
-    reg sim_reset$1;
-    reg sim_reset$2;
-    reg sim_reset$3;
-    reg sim_reset$4;
+    reg sim_resetn;
+    reg sim_resetn$1;
+    reg sim_resetn$2;
+    reg sim_resetn$3;
+//    reg sim_resetn$4;
+
+    reg sim_set;
+    reg sim_set$1;
+    reg sim_set$2;
+    reg sim_set$3;
+    reg sim_set$4;
+    reg sim_set$5;
 //    task clear;
 //     begin
-//        sim_reset = 1;
+//        sim_resetn = 1;
 //     end
 //    endtask
 //
 //    initial clear;
 
     initial begin
-        sim_reset$3 = 0;
-        sim_reset$4 = 1;
+        sim_resetn$1 = 1;
+        sim_resetn$2 = 0;
+        sim_set$3 = 1;
+        sim_set$4 = 0;
     end
 
     wire resetCommandStrobe;
     always @ (posedge clk) begin
-        sim_reset   <= ~sim_reset$1;
-        sim_reset$1 <= ~sim_reset$2;
-        sim_reset$2 <= ~sim_reset$3;
-        sim_reset$3 <= ~sim_reset$4;
-        sim_reset$4 <= 0;
+        sim_resetn   <= ~sim_resetn$1;		// 1
+        sim_resetn$1 <= ~sim_resetn$2;		// 0
+        sim_resetn$2 <= 1; //~sim_resetn$3;	// 1
+        //sim_resetn$3 <= ~sim_resetn$4;	// 0
+        //sim_resetn$4 <= 1;			// 1
+
+        sim_set   <= ~sim_set$1;	// 0
+        sim_set$1 <= ~sim_set$2;	// 1
+        sim_set$2 <= ~sim_set$3;	// 0
+        sim_set$3 <= ~sim_set$4;	// 1
+        sim_set$4 <= ~sim_set$5;	// 0
+        sim_set$5 <= 1;
     end
 
     // This exists outside the SpinalHDL project as it has async properties
@@ -61,7 +77,8 @@ module top_tt03_dlmiles_spinalhdl_uart (
         .async_reset_in (async_reset)
 //`ifdef COCOTB_SIM
 //`ifndef GL_TEST
-        , .sim_reset	(sim_reset)
+        , .sim_resetn	(sim_resetn)
+        , .sim_set	(sim_set)
 //`endif
 //`endif
     );
