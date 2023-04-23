@@ -42,12 +42,12 @@ module uart (
 
     always @ (posedge clk) begin
         if (reset) begin
-            out8 <= 0;
+            out8 <= 8'h0;
             run <= 1;
-            count <= 0;
-//        end else if(in7[6]) begin
-//            out8 <= 8'b10101100;
-        end else if (count == 0) begin
+            count <= 8'h0;
+        end else if (in7[6] && in7[5]) begin
+            out8 <= 8'b10101100;
+        end else if (count == 8'h0) begin
             out8[6:2] <= out8[6:2] + 1;
         end else begin
             count <= count - 1;
