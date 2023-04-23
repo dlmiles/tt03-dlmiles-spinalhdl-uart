@@ -9,7 +9,9 @@ module top_tt03_dlmiles_spinalhdl_uart (
     output		[7:0]		io_out,
     input		[7:0]		io_in
 `ifdef COCOTB_SIM
+`ifndef GL_TEST
 ,   input				sim_reset
+`endif
 `endif
 );
 
@@ -32,7 +34,9 @@ module top_tt03_dlmiles_spinalhdl_uart (
         .clk        	(clk),
         .async_reset_in (async_reset)
 `ifdef COCOTB_SIM
+`ifndef GL_TEST
         , .sim_reset	(sim_reset)
+`endif
 `endif
     );
 

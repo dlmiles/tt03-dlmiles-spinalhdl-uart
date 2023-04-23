@@ -12,7 +12,9 @@ module tb_uart (
     input		[6:0]	in7,
     output		[7:0]	out8
 `ifdef COCOTB_SIM
+`ifndef GL_TEST
     , input			sim_reset
+`endif
 `endif
 );
 
@@ -37,7 +39,9 @@ module tb_uart (
         .io_in    (inputs),
         .io_out   (outputs)
 `ifdef COCOTB_SIM
+`ifndef GL_TEST
      , .sim_reset (sim_reset)
+`endif
 `endif
     );
 
