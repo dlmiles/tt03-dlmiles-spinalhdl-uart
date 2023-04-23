@@ -222,12 +222,15 @@ async def test_uart(dut):
         await ClockCycles(dut.clk, 1)
         dut.sim_reset.value = 0
         await ClockCycles(dut.clk, 1)
-    elif design_element_exists(dut, 'dut.reset'):
-        dut.reset.value = 0
+    elif design_element_exists(dut, 'dut.sync_reset'):
+        # GL_TEST forcing a sync reset
+        # We would not need to do this if we can instruct icarus to initialize the
+        #   sr_latch to any state on powerup (not X state).
+        dut.sync_reset.value = 0
         await ClockCycles(dut.clk, 1)
-        dut.reset.value = 1
+        dut.sync_reset.value = 1
         await ClockCycles(dut.clk, 1)
-        dut.reset.value = 0
+        dut.sync_reset.value = 0
         await ClockCycles(dut.clk, 1)
 
     await ClockCycles(dut.clk, 6)

@@ -163,6 +163,27 @@ module Uart (
       io_out8[0] = bufPresent_0;
       io_out8[5] = 1'b1;
     end
+    case(rxStateMachine_state)
+      UartCtrlRxState_WAITMARK : begin
+      end
+      UartCtrlRxState_IDLE : begin
+      end
+      UartCtrlRxState_START : begin
+      end
+      UartCtrlRxState_DATA : begin
+      end
+      UartCtrlRxState_PARITY : begin
+      end
+      default : begin
+        if(rxBitTimer_tick) begin
+          if(!when_Uart_l549) begin
+            if(when_Uart_l551) begin
+              io_out8 = rxStateMachine_shifter_io_output8;
+            end
+          end
+        end
+      end
+    endcase
   end
 
   always @(*) begin

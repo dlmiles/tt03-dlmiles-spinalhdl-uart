@@ -2,7 +2,9 @@
 `timescale 1ns/1ps
 
 //
+//  What is the purpose of this module
 //
+//  It was to test the wrapper and reset system and testing regime.
 //
 //
 module uart_dummy (
