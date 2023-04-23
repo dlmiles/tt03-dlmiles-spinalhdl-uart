@@ -1,6 +1,7 @@
 name: gds
 # either manually started, or after spinalhdl runs
 on:
+  push:
   workflow_dispatch:
   workflow_run:
     workflows:
@@ -10,10 +11,6 @@ on:
       - 'dev'
     types:
       - completed
-  push:
-    branches:
-      - 'main'
-      - 'dev'
 
 permissions:
   contents: write
@@ -22,7 +19,7 @@ permissions:
 
 jobs:
   gds:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     env:
         OPENLANE_TAG:           2023.02.14
         OPENLANE_IMAGE_NAME:    efabless/openlane:4cd0986b3ae550cdf7a6d0fba4e0657012f635d8-amd64

@@ -1,6 +1,7 @@
 name: test
 # either manually started, or after spinalhdl runs
 on:
+  push:
   workflow_dispatch:
   workflow_run:
     workflows:
@@ -10,14 +11,10 @@ on:
       - 'dev'
     types:
       - completed
-  push:
-    branches:
-      - 'main'
-      - 'dev'
 
 jobs:
   test:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     # ubuntu
     runs-on: ubuntu-latest
     steps:
