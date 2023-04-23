@@ -164,7 +164,7 @@ module Uart (
       io_out8[5] = 1'b1;
     end else begin
       if(when_Uart_l352) begin
-        io_out8[0] = 1'b1;
+        io_out8[4] = 1'b1;
       end
     end
     io_out8[1] = samplingTicker_tick;
