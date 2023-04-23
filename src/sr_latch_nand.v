@@ -53,8 +53,9 @@ module sr_latch_nand (
     initial begin
         // FIXME we want to allow startup policy to be X, 0, 1, random here.
 `ifndef __ICARUS__
-        q = 0;
-        qn = 1;
+    // FIXME ifndef SIMULATION  SYNTH
+//        q = 0;
+//        qn = 1;
 `endif
     end
 
@@ -66,7 +67,7 @@ module sr_latch_nand (
     assign qn = qn_int;
 
 `ifndef __ICARUS__
-    // FIXME igndef __OPENLANE__
+    // FIXME ifndef __OPENLANE__
 //    asrt_setrst : assert(!r && !s)
 //     else $error("reset and set can not be high at the same time.");
 `endif
