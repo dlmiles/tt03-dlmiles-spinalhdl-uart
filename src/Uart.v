@@ -93,8 +93,8 @@ module Uart (
   wire                clockPrescaler_taps_0;
   wire                clockPrescaler_taps_1;
   wire                clockPrescaler_taps_2;
-  reg                 _zz_clockPrescaler_taps_1;
-  reg                 _zz_clockPrescaler_taps_2;
+  wire                _zz_clockPrescaler_taps_1;
+  wire                _zz_clockPrescaler_taps_2;
   wire                clockPrescaledOut;
   `ifndef SYNTHESIS
   reg [63:0] rxStateMachine_state_string;
@@ -237,7 +237,9 @@ module Uart (
   assign when_Uart_l556 = (! sampler_value);
   assign when_Uart_l558 = (rxBitCounter_value == _zz_when_Uart_l558);
   assign clockPrescaler_taps_0 = clk;
+  assign _zz_clockPrescaler_taps_1 = 1'b0;
   assign clockPrescaler_taps_1 = _zz_clockPrescaler_taps_1;
+  assign _zz_clockPrescaler_taps_2 = 1'b0;
   assign clockPrescaler_taps_2 = _zz_clockPrescaler_taps_2;
   assign clockPrescaledOut = _zz_clockPrescaledOut;
   always @(posedge clk or posedge reset) begin
@@ -250,6 +252,7 @@ module Uart (
       bufVec_0 <= 8'h00;
       bufPresent_0 <= 1'b0;
       samplingTicker_counter <= 5'h00;
+      samplingTicker_tick <= 1'b0;
       sampler_samples_1 <= 1'b1;
       sampler_samples_2 <= 1'b1;
       sampler_samples_3 <= 1'b1;
@@ -274,6 +277,7 @@ module Uart (
       if(when_Uart_l382) begin
         samplingTicker_counter <= (samplingTicker_counter - 5'h01);
         if(when_Uart_l384) begin
+          samplingTicker_tick <= (! samplingTicker_tick);
           samplingTicker_counter <= 5'h1e;
         end
       end
@@ -362,11 +366,6 @@ module Uart (
   end
 
   always @(posedge clk) begin
-    if(when_Uart_l382) begin
-      if(when_Uart_l384) begin
-        samplingTicker_tick <= (! samplingTicker_tick);
-      end
-    end
     if(rxBitTimer_tick) begin
       rxStateMachine_parity <= (rxStateMachine_parity ^ sampler_value);
     end
