@@ -212,7 +212,7 @@ async def test_uart(dut):
     filename = "../rom.txt"
     limit = 1024	# sys.maxsize
     if 'CI' in os.environ:
-        limit = sys.maxsize()	# CI no limit
+        limit = sys.maxsize	# CI no limit
     reader = RomReader(filename)
     count = 0
     while count < limit and reader.has_more():
