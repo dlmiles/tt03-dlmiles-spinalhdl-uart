@@ -5,7 +5,7 @@
 //
 //
 //
-module Uart (
+module uart_dummy (
     input				clk,
     input				reset,
     output reg		[7:0]		io_out8,
