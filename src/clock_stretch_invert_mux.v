@@ -11,7 +11,7 @@
 //	
 //
 module clock_stretch_invert_mux (
-    output reg                          clock_out,
+    output                              clock_out,
     input				clock_in,
     input				sel
 );
