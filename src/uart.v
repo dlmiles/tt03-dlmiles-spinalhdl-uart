@@ -45,7 +45,7 @@ module uart (
             out8 <= 8'h0;
             run <= 1;
             count <= 8'h0;
-        end else if (in7[6] && in7[5]) begin
+        end else if (in7[6] && in7[5] && cmd == CMD_CONFIG) begin
             out8 <= 8'b10101100;
         end else if (count == 8'h0) begin
             out8[6:2] <= out8[6:2] + 1;
