@@ -18,7 +18,7 @@ def try_integer(v, default_value=None):
         return v
     if v.is_resolvable:
         return v.integer
-    if default is not None:
+    if default_value is not None:
         return default_value
     return v
 
