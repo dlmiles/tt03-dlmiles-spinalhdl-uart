@@ -41,12 +41,12 @@ module top_tt03_dlmiles_spinalhdl_uart (
     );
 
     // This is the SpinalHDL project: uart
-    uart uart (
+    Uart uart (
         .clk			(clk),
         .reset			(sync_reset),
-        .out8			(out8),
-        .in7			(in7),
-        .resetCommandStrobe	(async_reset)
+        .io_out8		(out8),
+        .io_in7			(in7),
+        .io_resetCommandStrobe	(async_reset)
     );
 
 endmodule
