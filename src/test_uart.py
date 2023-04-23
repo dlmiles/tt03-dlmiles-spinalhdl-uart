@@ -142,7 +142,7 @@ async def send_in7_oneedge(dut, in7):
             out8_desc))
 
 async def send_in7(dut, in7):
-    in8 = try_integer(dut.in7.value << 1, 0) | try_integer(dut.clk.value, 0)	# rebuild for log output
+    in8 = try_integer(dut.in7.value, 0) << 1 | try_integer(dut.clk.value, 0)	# rebuild for log output
     dut._log.info("dut out8={} in7={} in8={}".format(dut.out8.value, dut.in7.value, in8))
     await FallingEdge(dut.clk)
     dut.in7.value = in7
@@ -241,6 +241,8 @@ async def test_uart(dut):
         await send_in8_oneedge(dut, reader.next())
         count += 1
     dut._log.info("{} count={}".format(filename, count))
+
+    report_resolvable(dut)
 
 
 class RomReader():
