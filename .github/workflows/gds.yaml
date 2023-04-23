@@ -3,8 +3,11 @@ name: gds
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["spinalhdl"]
-    branches: ["main","dev"]
+    workflows:
+      - 'spinalhdl'
+    branches:
+      - 'main'
+      - 'dev'
     types:
       - completed
   push:
