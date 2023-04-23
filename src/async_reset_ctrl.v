@@ -9,14 +9,14 @@ module async_reset_ctrl (
     output			reset_out,
     input			clk,
     input			async_reset_in
-`ifdef COCOTB_SIM
-`ifndef GL_TEST
+//`ifdef COCOTB_SIM
+//`ifndef GL_TEST
     // ifdef SIMULATOR
     // This input is provided to allow the simulator to put the state X into a
     //  none X state at startup.  Ideally we'd like this to be 0,1,random.
 ,   input			sim_reset
-`endif
-`endif
+//`endif
+//`endif
 );
 
     // The instance naming suffix 1,2,3 relates to the sequence the signal passed to get towards 'reset_out'
@@ -55,15 +55,15 @@ module async_reset_ctrl (
     assign #1 rs_reset_priority_inverted = !rs_reset_priority;	// effective NAND due to active LOW sr_latch_nand
 
     wire reset;		// net exists for sim_reset connection
-`ifdef COCOTB_SIM
-`ifndef GL_TEST
+//`ifdef COCOTB_SIM
+//`ifndef GL_TEST
     assign reset = !sim_reset & dff3q_inverted;	// COCOTB_SIM && !GL_TEST
-`else
-    assign reset = dff3q_inverted;		// COCOTB_SIM && GL_TEST
-`endif
-`else
-    assign reset = dff3q_inverted;		// !COCOTB_SIM
-`endif
+//`else
+//    assign reset = dff3q_inverted;		// COCOTB_SIM && GL_TEST
+//`endif
+//`else
+//    assign reset = dff3q_inverted;		// !COCOTB_SIM
+//`endif
 
     // using dff3q_inverted instead of dff3q as it is sr_latch_nand so active low
 
