@@ -66,8 +66,9 @@ module sr_latch_nand (
     assign qn = qn_int;
 
 `ifndef __ICARUS__
-    asrt_setrst : assert(!r && !s)
-     else $error("reset and set can not be high at the same time.");
+    // FIXME igndef __OPENLANE__
+//    asrt_setrst : assert(!r && !s)
+//     else $error("reset and set can not be high at the same time.");
 `endif
 
 endmodule
