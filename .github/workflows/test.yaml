@@ -8,6 +8,9 @@ on:
     types:
       - completed
   push:
+    branches:
+      - 'main'
+      - 'dev'
 
 jobs:
   test:
