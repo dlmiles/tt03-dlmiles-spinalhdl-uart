@@ -13,11 +13,13 @@ from cocotb.wavedrom import trace
 from cocotb.binary import BinaryValue
 
 
-def try_integer(v):
+def try_integer(v, default_value=None):
     if type(v) is int:
         return v
     if v.is_resolvable:
         return v.integer
+    if default is not None:
+        return default_value
     return v
 
 def try_binary(v, width=None):
@@ -121,7 +123,7 @@ async def send_in7_oneedge(dut, in7):
     in7_before = dut.in7.value
     out8_before = dut.out8.value
     clk_before, = dut.clk.value
-    in8 = dut.in7.value << 1 | dut.clk.value	# rebuild for log output
+    in8 = try_integer(dut.in7.value, 0) << 1 | try_integer(dut.clk.value, 0)	# rebuild for log output
     dut.in7.value = in7
     if dut.clk.value:
         await FallingEdge(dut.clk)
@@ -140,7 +142,7 @@ async def send_in7_oneedge(dut, in7):
             out8_desc))
 
 async def send_in7(dut, in7):
-    in8 = dut.in7.value << 1 | dut.clk.value	# rebuild for log output
+    in8 = try_integer(dut.in7.value << 1, 0) | try_integer(dut.clk.value, 0)	# rebuild for log output
     dut._log.info("dut out8={} in7={} in8={}".format(dut.out8.value, dut.in7.value, in8))
     await FallingEdge(dut.clk)
     dut.in7.value = in7
