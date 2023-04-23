@@ -2,6 +2,8 @@ name: gds
 # either manually started, or after spinalhdl runs
 on:
   push:
+    branches:
+      - 'dev'
   workflow_dispatch:
   workflow_run:
     workflows:
