@@ -212,6 +212,8 @@ async def test_uart(dut):
     ele = design_element(dut, 'dut.async_reset_ctrl.sim_reset')
     print("E ele={} {}".format(try_path(ele), try_value(ele)))
 
+    await ClockCycles(dut.clk, 6)
+
     # signal not present during GL_TEST
     if design_element_exists(dut, 'dut.sim_reset'):
         dut.sim_reset.value = 0
@@ -220,6 +222,15 @@ async def test_uart(dut):
         await ClockCycles(dut.clk, 1)
         dut.sim_reset.value = 0
         await ClockCycles(dut.clk, 1)
+    elif design_element_exists(dut, 'dut.reset'):
+        dut.reset.value = 0
+        await ClockCycles(dut.clk, 1)
+        dut.reset.value = 1
+        await ClockCycles(dut.clk, 1)
+        dut.reset.value = 0
+        await ClockCycles(dut.clk, 1)
+
+    await ClockCycles(dut.clk, 6)
 
     ele = design_element(dut, 'dut.sim_reset')
     print("F ele={} {}".format(try_path(ele), try_value(ele)))
