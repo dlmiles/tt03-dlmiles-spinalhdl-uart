@@ -249,6 +249,15 @@ module Uart (
       clknco <= 3'b000;
       bufVec_0 <= 8'h00;
       bufPresent_0 <= 1'b0;
+      samplingTicker_counter <= 5'h00;
+      sampler_samples_1 <= 1'b1;
+      sampler_samples_2 <= 1'b1;
+      sampler_samples_3 <= 1'b1;
+      sampler_samples_4 <= 1'b1;
+      sampler_value <= 1'b1;
+      sampler_tick <= 1'b1;
+      rxBitTimer_counter <= 3'b000;
+      rxBitCounter_value <= 3'b000;
       rxBreak_counter <= 7'h00;
       rxStateMachine_state <= UartCtrlRxState_WAITMARK;
     end else begin
@@ -261,6 +270,32 @@ module Uart (
           clkpre <= io_in7[3 : 2];
           clknco <= io_in7[6 : 4];
         end
+      end
+      if(when_Uart_l382) begin
+        samplingTicker_counter <= (samplingTicker_counter - 5'h01);
+        if(when_Uart_l384) begin
+          samplingTicker_counter <= 5'h1e;
+        end
+      end
+      if(samplingTick) begin
+        sampler_samples_1 <= sampler_samples_0;
+      end
+      if(samplingTick) begin
+        sampler_samples_2 <= sampler_samples_1;
+      end
+      if(samplingTick) begin
+        sampler_samples_3 <= sampler_samples_2;
+      end
+      if(samplingTick) begin
+        sampler_samples_4 <= sampler_samples_3;
+      end
+      sampler_value <= ((((((_zz_sampler_value || _zz_sampler_value_3) || (_zz_sampler_value_4 && sampler_samples_4)) || ((_zz_sampler_value_5 && sampler_samples_2) && sampler_samples_4)) || (((_zz_sampler_value_6 && sampler_samples_0) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_1) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_2) && sampler_samples_3) && sampler_samples_4));
+      sampler_tick <= samplingTick;
+      if(sampler_tick) begin
+        rxBitTimer_counter <= (rxBitTimer_counter - 3'b001);
+      end
+      if(rxBitTimer_tick) begin
+        rxBitCounter_value <= (rxBitCounter_value + 3'b001);
       end
       if(sampler_value) begin
         rxBreak_counter <= 7'h00;
@@ -278,10 +313,12 @@ module Uart (
         UartCtrlRxState_IDLE : begin
           if(when_Uart_l513) begin
             rxStateMachine_state <= UartCtrlRxState_START;
+            rxBitTimer_counter <= 3'b010;
           end
         end
         UartCtrlRxState_START : begin
           rxStateMachine_state <= UartCtrlRxState_DATA;
+          rxBitCounter_value <= 3'b000;
           if(when_Uart_l524) begin
             rxStateMachine_state <= UartCtrlRxState_IDLE;
           end
@@ -289,6 +326,7 @@ module Uart (
         UartCtrlRxState_DATA : begin
           if(rxBitTimer_tick) begin
             if(when_Uart_l533) begin
+              rxBitCounter_value <= 3'b000;
               if(when_Uart_l535) begin
                 rxStateMachine_state <= UartCtrlRxState_STOP;
               end else begin
@@ -300,6 +338,7 @@ module Uart (
         UartCtrlRxState_PARITY : begin
           if(rxBitTimer_tick) begin
             rxStateMachine_state <= UartCtrlRxState_STOP;
+            rxBitCounter_value <= 3'b000;
             if(when_Uart_l548) begin
               rxStateMachine_state <= UartCtrlRxState_IDLE;
             end
@@ -324,31 +363,9 @@ module Uart (
 
   always @(posedge clk) begin
     if(when_Uart_l382) begin
-      samplingTicker_counter <= (samplingTicker_counter - 5'h01);
       if(when_Uart_l384) begin
         samplingTicker_tick <= (! samplingTicker_tick);
-        samplingTicker_counter <= 5'h1e;
       end
-    end
-    if(samplingTick) begin
-      sampler_samples_1 <= sampler_samples_0;
-    end
-    if(samplingTick) begin
-      sampler_samples_2 <= sampler_samples_1;
-    end
-    if(samplingTick) begin
-      sampler_samples_3 <= sampler_samples_2;
-    end
-    if(samplingTick) begin
-      sampler_samples_4 <= sampler_samples_3;
-    end
-    sampler_value <= ((((((_zz_sampler_value || _zz_sampler_value_3) || (_zz_sampler_value_4 && sampler_samples_4)) || ((_zz_sampler_value_5 && sampler_samples_2) && sampler_samples_4)) || (((_zz_sampler_value_6 && sampler_samples_0) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_1) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_2) && sampler_samples_3) && sampler_samples_4));
-    sampler_tick <= samplingTick;
-    if(sampler_tick) begin
-      rxBitTimer_counter <= (rxBitTimer_counter - 3'b001);
-    end
-    if(rxBitTimer_tick) begin
-      rxBitCounter_value <= (rxBitCounter_value + 3'b001);
     end
     if(rxBitTimer_tick) begin
       rxStateMachine_parity <= (rxStateMachine_parity ^ sampler_value);
@@ -357,12 +374,8 @@ module Uart (
       UartCtrlRxState_WAITMARK : begin
       end
       UartCtrlRxState_IDLE : begin
-        if(when_Uart_l513) begin
-          rxBitTimer_counter <= 3'b010;
-        end
       end
       UartCtrlRxState_START : begin
-        rxBitCounter_value <= 3'b000;
         rxStateMachine_parity <= (modeParity == UartParityType_ODD);
       end
       UartCtrlRxState_DATA : begin
@@ -391,15 +404,9 @@ module Uart (
           if(_zz_1[7]) begin
             rxStateMachine_shifterVec_7 <= sampler_value;
           end
-          if(when_Uart_l533) begin
-            rxBitCounter_value <= 3'b000;
-          end
         end
       end
       UartCtrlRxState_PARITY : begin
-        if(rxBitTimer_tick) begin
-          rxBitCounter_value <= 3'b000;
-        end
       end
       default : begin
       end
