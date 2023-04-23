@@ -48,9 +48,25 @@ def try_compare_equal(a, b):
     return rv
 
 def try_name(v):
-    if v._name:
+    if v is None:
+        return None
+    if hasattr(v, '_name'):
         return v._name
-    return v
+    return str(v)
+
+def try_path(v):
+    if v is None:
+        return None
+    if hasattr(v, '_path'):
+        return v._path
+    return str(v)
+
+def try_value(v):
+    if v is None:
+        return None
+    if hasattr(v, 'value'):
+        return v.value
+    return str(v)
 
 def report_resolvable(dut, pfx = None, node = None, depth = 3):
     if depth <= 0:
@@ -73,9 +89,9 @@ def report_resolvable(dut, pfx = None, node = None, depth = 3):
 
 # Does not nest
 def design_element_internal(dut_or_node, name):
-    print("design_element_internal(dut_or_node={}, name={})".format(dut_or_node, name))
+    #print("design_element_internal(dut_or_node={}, name={})".format(dut_or_node, name))
     for design_element in dut_or_node:
-        print("design_element_internal(dut_or_node={}, name={}) {} {}".format(dut_or_node, name, try_name(design_element), design_element))
+        #print("design_element_internal(dut_or_node={}, name={}) {} {}".format(dut_or_node, name, try_name(design_element), design_element))
         if design_element._name == name:
             return design_element
     return None
@@ -83,7 +99,7 @@ def design_element_internal(dut_or_node, name):
 # design_element(dut, 'module1.module2.signal')
 def design_element(dut, name):
     names = name.split('.')	# will return itself if no dot
-    print("design_element(name={}) {} len={}".format(name, names, len(names)))
+    #print("design_element(name={}) {} len={}".format(name, names, len(names)))
     node = dut
     for name in names:
         node = design_element_internal(node, name)
@@ -173,34 +189,38 @@ async def test_uart(dut):
     # This is a simulator async kludge, I need to break the X state (I don't care if with 0 or 1)
     # If it started up as a 1, we just clock a few more times (like 3 edges) to clear it.
     ele = design_element(dut, 'dut')
-    print("A ele={}".format(ele))
+    print("A ele={} {}".format(try_path(ele), try_value(ele)))
     if ele:
         ele1 = design_element(ele, 'async_reset_ctrl')
-        print("A ele1={}".format(ele1))
+        print("A ele1={} {}".format(try_path(ele1), try_value(ele1)))
         if ele1:
             ele2 = design_element(ele1, 'sim_reset')
-            print("A ele2={}".format(ele2))
+            print("A ele2={} {}".format(try_path(ele2), try_value(ele2)))
 
     ele = design_element(dut, 'dut')
-    print("B ele={}".format(ele))
+    print("B ele={} {}".format(try_path(ele), try_value(ele)))
     if ele:
         ele1 = design_element(ele, 'sim_reset')
-        print("B ele1={}".format(ele1))
+        print("B ele1={} {}".format(try_path(ele1), try_value(el1)))
 
     ele = design_element(dut, 'dut.sim_reset')
-    print("C ele={}".format(ele))
+    print("C ele={} {}".format(try_path(ele), try_value(ele)))
     ele = design_element(dut, 'dut.async_reset_ctrl')
-    print("D ele={}".format(ele))
+    print("D ele={} {}".format(try_path(ele), try_value(ele)))
     ele = design_element(dut, 'dut.async_reset_ctrl.sim_reset')
-    print("E ele={}".format(ele))
+    print("E ele={} {}".format(try_path(ele), try_value(ele)))
 
+    # signal not present during GL_TEST
+    if design_element_exists(dut, 'dut.sim_reset'):
+        dut.sim_reset.value = 0
+        await ClockCycles(dut.clk, 1)
+        dut.sim_reset.value = 1
+        await ClockCycles(dut.clk, 1)
+        dut.sim_reset.value = 0
+        await ClockCycles(dut.clk, 1)
 
-    dut.sim_reset.value = 0
-    await ClockCycles(dut.clk, 1)
-    dut.sim_reset.value = 1
-    await ClockCycles(dut.clk, 1)
-    dut.sim_reset.value = 0
-    await ClockCycles(dut.clk, 1)
+    ele = design_element(dut, 'dut.sim_reset')
+    print("F ele={} {}".format(try_path(ele), try_value(ele)))
 
     report_resolvable(dut)
 
