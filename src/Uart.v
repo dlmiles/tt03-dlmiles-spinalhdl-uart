@@ -50,7 +50,7 @@ module Uart (
   wire                rxErrorStop;
   wire                when_Uart_l342;
   wire                when_Uart_l350;
-  wire                when_Uart_l357;
+  wire                when_Uart_l356;
   reg        [4:0]    samplingTicker_counter;
   reg                 samplingTicker_tick;
   wire                when_Uart_l382;
@@ -164,8 +164,11 @@ module Uart (
       if(when_Uart_l350) begin
         io_out8[4] = 1'b1;
       end
-      io_out8[0] = bufPresent_0;
       io_out8[5] = 1'b1;
+    end else begin
+      if(!when_Uart_l356) begin
+        io_out8[0] = bufPresent_0;
+      end
     end
     io_out8[1] = samplingTicker_tick;
     io_out8[2] = sampler_tick;
@@ -206,7 +209,7 @@ module Uart (
 
   assign when_Uart_l342 = (cmd == 2'b01);
   assign when_Uart_l350 = (io_in7[6 : 2] == 5'h18);
-  assign when_Uart_l357 = (cmd == 2'b10);
+  assign when_Uart_l356 = (cmd == 2'b10);
   assign when_Uart_l382 = 1'b1;
   assign when_Uart_l384 = (samplingTicker_counter == 5'h00);
   assign samplingTick = samplingTicker_tick;
@@ -237,17 +240,89 @@ module Uart (
   assign clockPrescaler_taps_1 = _zz_clockPrescaler_taps_1;
   assign clockPrescaler_taps_2 = _zz_clockPrescaler_taps_2;
   assign clockPrescaledOut = _zz_clockPrescaledOut;
-  always @(posedge clk) begin
-    if(when_Uart_l342) begin
-      modeData7 <= io_in7[2];
-      modeParity <= io_in7[4 : 3];
-      modeStop <= io_in7[6 : 5];
+  always @(posedge clk or posedge reset) begin
+    if(reset) begin
+      modeData7 <= 1'b0;
+      modeParity <= 2'b00;
+      modeStop <= 2'b00;
+      clkpre <= 2'b00;
+      clknco <= 3'b000;
+      bufVec_0 <= 8'h00;
+      bufPresent_0 <= 1'b0;
+      rxBreak_counter <= 7'h00;
+      rxStateMachine_state <= UartCtrlRxState_WAITMARK;
     end else begin
-      if(when_Uart_l357) begin
-        clkpre <= io_in7[3 : 2];
-        clknco <= io_in7[6 : 4];
+      if(when_Uart_l342) begin
+        modeData7 <= io_in7[2];
+        modeParity <= io_in7[4 : 3];
+        modeStop <= io_in7[6 : 5];
+      end else begin
+        if(when_Uart_l356) begin
+          clkpre <= io_in7[3 : 2];
+          clknco <= io_in7[6 : 4];
+        end
       end
+      if(sampler_value) begin
+        rxBreak_counter <= 7'h00;
+      end else begin
+        if(when_Uart_l479) begin
+          rxBreak_counter <= (rxBreak_counter + 7'h01);
+        end
+      end
+      case(rxStateMachine_state)
+        UartCtrlRxState_WAITMARK : begin
+          if(when_Uart_l508) begin
+            rxStateMachine_state <= UartCtrlRxState_IDLE;
+          end
+        end
+        UartCtrlRxState_IDLE : begin
+          if(when_Uart_l513) begin
+            rxStateMachine_state <= UartCtrlRxState_START;
+          end
+        end
+        UartCtrlRxState_START : begin
+          rxStateMachine_state <= UartCtrlRxState_DATA;
+          if(when_Uart_l524) begin
+            rxStateMachine_state <= UartCtrlRxState_IDLE;
+          end
+        end
+        UartCtrlRxState_DATA : begin
+          if(rxBitTimer_tick) begin
+            if(when_Uart_l533) begin
+              if(when_Uart_l535) begin
+                rxStateMachine_state <= UartCtrlRxState_STOP;
+              end else begin
+                rxStateMachine_state <= UartCtrlRxState_PARITY;
+              end
+            end
+          end
+        end
+        UartCtrlRxState_PARITY : begin
+          if(rxBitTimer_tick) begin
+            rxStateMachine_state <= UartCtrlRxState_STOP;
+            if(when_Uart_l548) begin
+              rxStateMachine_state <= UartCtrlRxState_IDLE;
+            end
+          end
+        end
+        default : begin
+          if(rxBitTimer_tick) begin
+            if(when_Uart_l556) begin
+              rxStateMachine_state <= UartCtrlRxState_IDLE;
+            end else begin
+              if(when_Uart_l558) begin
+                rxStateMachine_state <= UartCtrlRxState_IDLE;
+                bufPresent_0 <= 1'b1;
+                bufVec_0 <= rxStateMachine_shifter_io_output8;
+              end
+            end
+          end
+        end
+      endcase
     end
+  end
+
+  always @(posedge clk) begin
     if(when_Uart_l382) begin
       samplingTicker_counter <= (samplingTicker_counter - 5'h01);
       if(when_Uart_l384) begin
@@ -327,79 +402,8 @@ module Uart (
         end
       end
       default : begin
-        if(rxBitTimer_tick) begin
-          if(!when_Uart_l556) begin
-            if(when_Uart_l558) begin
-              bufPresent_0 <= 1'b1;
-              bufVec_0 <= rxStateMachine_shifter_io_output8;
-            end
-          end
-        end
       end
     endcase
-  end
-
-  always @(posedge clk or posedge reset) begin
-    if(reset) begin
-      rxBreak_counter <= 7'h00;
-      rxStateMachine_state <= UartCtrlRxState_WAITMARK;
-    end else begin
-      if(sampler_value) begin
-        rxBreak_counter <= 7'h00;
-      end else begin
-        if(when_Uart_l479) begin
-          rxBreak_counter <= (rxBreak_counter + 7'h01);
-        end
-      end
-      case(rxStateMachine_state)
-        UartCtrlRxState_WAITMARK : begin
-          if(when_Uart_l508) begin
-            rxStateMachine_state <= UartCtrlRxState_IDLE;
-          end
-        end
-        UartCtrlRxState_IDLE : begin
-          if(when_Uart_l513) begin
-            rxStateMachine_state <= UartCtrlRxState_START;
-          end
-        end
-        UartCtrlRxState_START : begin
-          rxStateMachine_state <= UartCtrlRxState_DATA;
-          if(when_Uart_l524) begin
-            rxStateMachine_state <= UartCtrlRxState_IDLE;
-          end
-        end
-        UartCtrlRxState_DATA : begin
-          if(rxBitTimer_tick) begin
-            if(when_Uart_l533) begin
-              if(when_Uart_l535) begin
-                rxStateMachine_state <= UartCtrlRxState_STOP;
-              end else begin
-                rxStateMachine_state <= UartCtrlRxState_PARITY;
-              end
-            end
-          end
-        end
-        UartCtrlRxState_PARITY : begin
-          if(rxBitTimer_tick) begin
-            rxStateMachine_state <= UartCtrlRxState_STOP;
-            if(when_Uart_l548) begin
-              rxStateMachine_state <= UartCtrlRxState_IDLE;
-            end
-          end
-        end
-        default : begin
-          if(rxBitTimer_tick) begin
-            if(when_Uart_l556) begin
-              rxStateMachine_state <= UartCtrlRxState_IDLE;
-            end else begin
-              if(when_Uart_l558) begin
-                rxStateMachine_state <= UartCtrlRxState_IDLE;
-              end
-            end
-          end
-        end
-      endcase
-    end
   end
 
 

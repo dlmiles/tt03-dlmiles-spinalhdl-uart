@@ -70,8 +70,10 @@ def try_value(v):
         return v.value
     return str(v)
 
-def report_resolvable(dut, pfx = None, node = None, depth = 3):
-    if depth <= 0:
+def report_resolvable(dut, pfx = None, node = None, depth = None):
+    if depth is None:
+        depth = 3
+    if depth < 0:
         return
     if node is None:
         node = dut
@@ -238,7 +240,10 @@ async def test_uart(dut):
     ele = design_element(dut, 'dut.sim_reset')
     print("F ele={} {}".format(try_path(ele), try_value(ele)))
 
-    report_resolvable(dut)
+    depth = None
+    if 'GL_TEST' in os.environ:
+        depth = 1
+    report_resolvable(dut, depth=depth)
 
     # Perform reset sequence
     reset_seq = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
