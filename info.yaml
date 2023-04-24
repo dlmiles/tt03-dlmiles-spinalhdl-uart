@@ -7,8 +7,10 @@ project:
 # Source files must be in ./src and you must list each source file separately
   source_files:        
     - dff.v
+    - dffqn_negedge.v
     - sr_latch_nand.v
     - clock_stretch_invert_mux.v
+    - glitch_free_clock_mux.v
     - async_reset_ctrl.v
     - top_tt03_dlmiles_spinalhdl_uart.v
     - uart_dummy.v
