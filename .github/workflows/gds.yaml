@@ -101,13 +101,23 @@ jobs:
         make
 
     # fixup OpenLane 2023.03.28 onwards
-    - name: openlane fix
+    - name: openlane fix 2023_03_28
       run: |
         if test -f .github/fixup_reports_run_path_2023_03_28.sh
         then
           chmod a+x .github/fixup_reports_run_path_2023_03_28.sh
           cd $OPENLANE_ROOT
           "${GITHUB_WORKSPACE}/.github/fixup_reports_run_path_2023_03_28.sh" -nobackup
+        fi
+
+    # fixup OpenLane 2023.04.20 onwards
+    - name: openlane fix 2023_04_20
+      run: |
+        if test -f .github/fixup_synthesis_veriltor_lint_2023_04_20.sh
+        then
+          chmod a+x .github/fixup_synthesis_veriltor_lint_2023_04_20.sh
+          cd $OPENLANE_ROOT
+          "${GITHUB_WORKSPACE}/.github/fixup_synthesis_veriltor_lint_2023_04_20.sh" -nobackup
         fi
 
     # run OpenLane to build the GDS

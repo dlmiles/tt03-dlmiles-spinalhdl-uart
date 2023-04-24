@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#	This is safe to run everytime, it only edits the file if it need editing.
+#	This is safe to run everytime, it only edits the file if it needs editing.
 #
 #$ diff -u scripts/report/report.py~ scripts/report/report.py
 #--- scripts/report/report.py~	2023-04-26 18:58:28.000000000 +0100
