@@ -100,6 +100,17 @@ jobs:
         cd $OPENLANE_ROOT
         make
 
+    # fixup OpenLane 2023.03.28 onwards
+    - name: openlane fix
+      run: |
+        if -f .github/fixup_reports_run_path_2023_03_28.sh
+        then
+          chmod a+x .github/fixup_reports_run_path_2023_03_28.sh
+          work_dir=$(pwd)
+          cd $OPENLANE_ROOT
+          "$(work_dir)/.github/fixup_reports_run_path_2023_03_28.sh" -nobackup
+        fi
+
     # run OpenLane to build the GDS
     - name: make GDS
       run: ./tt/tt_tool.py --harden
