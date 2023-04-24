@@ -109,8 +109,7 @@ module Uart (
   reg                 area_sampler_regSamples_4;
   reg                 area_sampler_value;
   reg        [2:0]    area_rxBitTimer_counter;
-  reg                 area_rxBitTimer_tick;
-  wire                when_Uart_l708;
+  wire                area_rxBitTimer_tick;
   reg        [3:0]    area_rxBitCounter_value;
   reg        [6:0]    area_rxBreak_counter;
   wire                area_rxBreak_valid;
@@ -410,16 +409,7 @@ module Uart (
   assign area_samplingTickCmdData = (clockPrescalerRetarder_stretcher_clock_out && area_samplingTickCmdDataDATA);
   assign area_sampler_synchroniser = rxd_buffercc_io_dataOut;
   assign area_sampler_inputBuffer = area_sampler_synchroniser;
-  always @(*) begin
-    area_rxBitTimer_tick = 1'b0;
-    if(area_samplingTickCmdData) begin
-      if(when_Uart_l708) begin
-        area_rxBitTimer_tick = 1'b1;
-      end
-    end
-  end
-
-  assign when_Uart_l708 = (area_rxBitTimer_counter == 3'b000);
+  assign area_rxBitTimer_tick = (area_rxBitTimer_counter == 3'b000);
   assign area_rxBreak_valid = (area_rxBreak_counter == 7'h68);
   assign when_Uart_l758 = (area_samplingTickCmdData && (! area_rxBreak_valid));
   assign when_Uart_l762 = (area_rxBreak_valid && (! area_rxBreak_valid_regNext));
