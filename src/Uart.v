@@ -116,6 +116,7 @@ module Uart (
   wire                when_Uart_l655;
   wire                when_Uart_l663;
   wire                when_Uart_l665;
+  wire                when_Uart_l678;
   `ifndef SYNTHESIS
   reg [63:0] rxStateMachine_state_string;
   `endif
@@ -199,14 +200,6 @@ module Uart (
         io_out8[4] = 1'b1;
       end
       io_out8[5] = 1'b1;
-    end else begin
-      if(!when_Uart_l383) begin
-        if(!when_Uart_l386) begin
-          if(bufPresent_0) begin
-            io_out8 = bufVec_0;
-          end
-        end
-      end
     end
     io_out8[1] = clockPrescalerRetarder_stretecher_clock_out;
     io_out8[2] = sampler_tick;
@@ -234,6 +227,11 @@ module Uart (
         end
       end
     endcase
+    if(when_Uart_l678) begin
+      if(bufPresent_0) begin
+        io_out8 = bufVec_0;
+      end
+    end
   end
 
   always @(*) begin
@@ -307,6 +305,7 @@ module Uart (
   assign when_Uart_l655 = (rxStateMachine_parity != sampler_value);
   assign when_Uart_l663 = (! sampler_value);
   assign when_Uart_l665 = (rxBitCounter_value == _zz_when_Uart_l665);
+  assign when_Uart_l678 = (cmd == 2'b00);
   always @(posedge clk or posedge reset) begin
     if(reset) begin
       rxdLast <= 1'b1;
