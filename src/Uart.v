@@ -202,7 +202,7 @@ module Uart (
       end
       io_out8[5] = 1'b1;
     end
-    io_out8[1] = stretcherClockIn;
+    io_out8[1] = clockPrescalerRetarder_stretcher_clock_out;
     io_out8[2] = sampler_tick;
     io_out8[3] = rxBitTimer_tick;
     io_out8[7 : 4] = rxBitCounter_value;
@@ -272,7 +272,7 @@ module Uart (
   assign samplingTicker_samplingTickerInputTick = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clk);
   assign when_Uart_l481 = 1'b1;
   assign when_Uart_l483 = (samplingTicker_counter == 1'b0);
-  assign samplingTick = stretcherClockIn;
+  assign samplingTick = clockPrescalerRetarder_stretcher_clock_out;
   assign samplingTickCmdData = (samplingTick && (cmd == 2'b00));
   assign sampler_synchroniser = rxd_buffercc_io_dataOut;
   assign sampler_samples_0 = sampler_synchroniser;
