@@ -411,7 +411,7 @@ module Uart (
   assign area_sampler_inputBuffer = area_sampler_synchroniser;
   assign area_rxBitTimer_tick = (area_rxBitTimer_counter == 3'b000);
   assign area_rxBreak_valid = (area_rxBreak_counter == 7'h68);
-  assign when_Uart_l758 = (area_samplingTickCmdData && (! area_rxBreak_valid));
+  assign when_Uart_l758 = (area_samplingTickCmdDataDATA && (! area_rxBreak_valid));
   assign when_Uart_l762 = (area_rxBreak_valid && (! area_rxBreak_valid_regNext));
   assign area_rxStateMachine_shifter_io_en = (area_rxStateMachine_state == UartCtrlRxState_DATA);
   assign area_rxStateMachine_shifterOutputSized = (modeData7 ? _zz_area_rxStateMachine_shifterOutputSized : area_rxStateMachine_shifter_io_output8);
