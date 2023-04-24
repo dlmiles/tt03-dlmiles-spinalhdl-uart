@@ -110,6 +110,32 @@ jobs:
         path: 'gds_render.png'
         key: ${{ runner.os }}-png-${{ github.run_id }}
 
+    - name: upload artifact
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+          # path depends on the tag and the module name
+          name: GDS-failure-logs
+          path: |
+            src/*
+            runs/wokwi/*
+            runs/wokwi/results/final/*
+            runs/wokwi/reports/metrics.csv
+            runs/wokwi/reports/synthesis/1-synthesis.AREA 0.stat.rpt
+
+    - name: upload artifact
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+          # path depends on the tag and the module name
+          name: GDS-success-logs
+          path: |
+            src/*
+            runs/wokwi/*
+            runs/wokwi/results/final/*
+            runs/wokwi/reports/metrics.csv
+            runs/wokwi/reports/synthesis/1-synthesis.AREA 0.stat.rpt
+
 ##############################################################
 # GateLevel sim
   gatelevel:
