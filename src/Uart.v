@@ -22,7 +22,6 @@ module Uart (
   localparam UartParityType_ODD = 2'd1;
   localparam UartParityType_EVEN = 2'd2;
 
-  wire                clockPrescalerRetarder_stretcher_clock_out;
   wire                rxd_buffercc_io_dataOut;
   wire       [6:0]    rxStateMachine_shifter_io_output7;
   wire       [7:0]    rxStateMachine_shifter_io_output8;
@@ -70,11 +69,7 @@ module Uart (
   reg                 clockPrescalerCounter_tick;
   wire                clockPrescalerCounter_clockPrescalerCounterInputTick;
   wire                when_Uart_l439;
-  reg        [3:0]    clockPrescalerRetarder_counter;
-  reg                 clockPrescalerRetarder_sel;
-  wire                when_Uart_l450;
-  wire                when_Uart_l452;
-  wire                clockPrescalerRetarder_stretcherClockIn;
+  wire                stretcherClockIn;
   reg        [0:0]    samplingTicker_counter;
   reg                 samplingTicker_tick;
   wire                samplingTicker_samplingTickerInputTick;
@@ -132,11 +127,6 @@ module Uart (
   assign _zz_sampler_value_6 = 1'b1;
   assign _zz_sampler_value_1 = (1'b1 && sampler_samples_0);
   assign _zz_sampler_value_2 = 1'b1;
-  clock_stretch_invert_mux clockPrescalerRetarder_stretcher (
-    .clock_out (clockPrescalerRetarder_stretcher_clock_out), //o
-    .clock_in  (clockPrescalerRetarder_stretcherClockIn   ), //i
-    .sel       (clockPrescalerRetarder_sel                )  //i
-  );
   BufferCC rxd_buffercc (
     .io_dataIn  (rxd                    ), //i
     .io_dataOut (rxd_buffercc_io_dataOut), //o
@@ -201,7 +191,7 @@ module Uart (
       end
       io_out8[5] = 1'b1;
     end
-    io_out8[1] = clockPrescalerRetarder_stretcherClockIn;
+    io_out8[1] = stretcherClockIn;
     io_out8[2] = sampler_tick;
     io_out8[3] = rxBitTimer_tick;
     io_out8[7 : 4] = rxBitCounter_value;
@@ -274,13 +264,11 @@ module Uart (
 
   assign clockPrescalerCounter_clockPrescalerCounterInputTick = ((regPredivRpl != 2'b00) ? clockPrescaledOut : 1'b1);
   assign when_Uart_l439 = (clockPrescalerCounter_counter == _zz_when_Uart_l439);
-  assign when_Uart_l450 = (regPreretCtr != 4'b0000);
-  assign when_Uart_l452 = (clockPrescalerRetarder_counter == 4'b0000);
-  assign clockPrescalerRetarder_stretcherClockIn = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clk);
+  assign stretcherClockIn = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clk);
   assign samplingTicker_samplingTickerInputTick = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clk);
   assign when_Uart_l480 = 1'b1;
   assign when_Uart_l482 = (samplingTicker_counter == 1'b0);
-  assign samplingTick = clockPrescalerRetarder_stretcherClockIn;
+  assign samplingTick = stretcherClockIn;
   assign samplingTickCmdData = (samplingTick && (cmd == 2'b00));
   assign sampler_synchroniser = rxd_buffercc_io_dataOut;
   assign sampler_samples_0 = sampler_synchroniser;
@@ -319,8 +307,6 @@ module Uart (
       bufVec_0 <= 8'h00;
       bufPresent_0 <= 1'b0;
       clockPrescalerCounter_counter <= 4'b0000;
-      clockPrescalerRetarder_counter <= 4'b0000;
-      clockPrescalerRetarder_sel <= 1'b0;
       samplingTicker_counter <= 1'b0;
       samplingTicker_tick <= 1'b0;
       sampler_samples_1 <= 1'b1;
@@ -357,15 +343,6 @@ module Uart (
         if(when_Uart_l439) begin
           clockPrescalerCounter_counter <= 4'b0000;
         end
-      end
-      if(when_Uart_l450) begin
-        clockPrescalerRetarder_counter <= (clockPrescalerRetarder_counter - 4'b0001);
-        if(when_Uart_l452) begin
-          clockPrescalerRetarder_counter <= regPreretCtr;
-          clockPrescalerRetarder_sel <= (! clockPrescalerRetarder_sel);
-        end
-      end else begin
-        clockPrescalerRetarder_sel <= 1'b0;
       end
       samplingTicker_tick <= 1'b0;
       if(when_Uart_l480) begin
