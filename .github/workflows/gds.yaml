@@ -103,13 +103,16 @@ jobs:
     # fixup OpenLane 2023.03.28 onwards
     - name: openlane fix
       run: |
-        #if test -f .github/fixup_reports_run_path_2023_03_28.sh
-        #then
+        declare -p
+        echo "START"
+        if test -f .github/fixup_reports_run_path_2023_03_28.sh
+        then
           chmod a+x .github/fixup_reports_run_path_2023_03_28.sh
+          pwd
           work_dir=$(pwd)
           cd $OPENLANE_ROOT
           "$(work_dir)/.github/fixup_reports_run_path_2023_03_28.sh" -nobackup
-        #fi
+        fi
 
     # run OpenLane to build the GDS
     - name: make GDS
