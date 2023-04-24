@@ -82,6 +82,7 @@ module Uart (
   wire                when_Uart_l483;
   wire                samplingTick;
   wire                samplingTickCmdData;
+  reg                 samplingTickCmdDataRegNext;
   wire                sampler_synchroniser;
   wire                sampler_samples_0;
   reg                 sampler_samples_1;
@@ -367,20 +368,20 @@ module Uart (
           samplingTicker_tick <= 1'b1;
         end
       end
-      if(samplingTickCmdData) begin
+      if(samplingTickCmdDataRegNext) begin
         sampler_samples_1 <= sampler_samples_0;
       end
-      if(samplingTickCmdData) begin
+      if(samplingTickCmdDataRegNext) begin
         sampler_samples_2 <= sampler_samples_1;
       end
-      if(samplingTickCmdData) begin
+      if(samplingTickCmdDataRegNext) begin
         sampler_samples_3 <= sampler_samples_2;
       end
-      if(samplingTickCmdData) begin
+      if(samplingTickCmdDataRegNext) begin
         sampler_samples_4 <= sampler_samples_3;
       end
       sampler_value <= ((((((_zz_sampler_value || _zz_sampler_value_3) || (_zz_sampler_value_4 && sampler_samples_4)) || ((_zz_sampler_value_5 && sampler_samples_2) && sampler_samples_4)) || (((_zz_sampler_value_6 && sampler_samples_0) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_1) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_2) && sampler_samples_3) && sampler_samples_4));
-      sampler_tick <= samplingTickCmdData;
+      sampler_tick <= samplingTickCmdDataRegNext;
       if(sampler_tick) begin
         rxBitTimer_counter <= (rxBitTimer_counter - 3'b001);
       end
@@ -477,6 +478,7 @@ module Uart (
   end
 
   always @(posedge clk) begin
+    samplingTickCmdDataRegNext <= samplingTickCmdData;
     if(rxBitTimer_tick) begin
       rxStateMachine_parity <= (rxStateMachine_parity ^ sampler_value);
     end
