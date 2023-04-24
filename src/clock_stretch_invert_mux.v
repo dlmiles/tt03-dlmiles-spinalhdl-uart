@@ -70,9 +70,27 @@ module clock_stretch_invert_mux (
     // Inverted High state
     assign mux_or[2] = clock_in_inverted & sel_delay3half;
 
+    sky130_fd_sc_hd__clkbuf_8 myclkbuf8(
+        .A(mux_or[0] | mux_or[1] | mux_or[2]),
+        .X(clock_out)
+    );
+
     // Glitch free clock mux output final 3-input OR
-    assign clock_out = mux_or[0] | mux_or[1] | mux_or[2];	// need for iverilog
+    //assign clock_out = mux_or[0] | mux_or[1] | mux_or[2];	// need for iverilog
     //assign clock_out = |mux_or[2:0];		// reduction operator
     //assign clock_out = |mux_or;		// reduction operator
 
 endmodule
+
+`ifndef SYNTHESIS
+`ifndef GL_TEST
+module sky130_fd_sc_hd__clkbuf_8 (
+    output X,
+    input A
+);
+
+    assign X = A;
+
+endmodule
+`endif
+`endif

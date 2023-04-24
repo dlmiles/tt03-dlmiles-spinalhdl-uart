@@ -76,6 +76,24 @@ module glitch_free_clock_mux (
 
     // Combine AND clock-gated outputs
 
-    assign clk_out = and02 | and12;
+    sky130_fd_sc_hd__clkbuf_4 myclkbuf4(
+        .A(and02 | and12),
+        .X(clk_out)
+    );
+
+    //assign clk_out = and02 | and12;
 
 endmodule
+
+`ifndef SYNTHESIS
+`ifndef GL_TEST
+module sky130_fd_sc_hd__clkbuf_4 (
+    output X,
+    input A
+);
+
+    assign X = A;
+
+endmodule
+`endif
+`endif
