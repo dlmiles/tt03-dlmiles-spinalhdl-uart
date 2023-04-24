@@ -27,7 +27,19 @@
 c2 c3 c2 c3 c2 c3 c2 c3
 
 # CMD_PREDIV clkdiv=3'b100(/4) clkpre=2'b00(/1) cmd=2'b10(CMD_PREDIV=2) = 1000010x
-84 85 84 85 84 85 84 85 84 85 84 85 84 85 84 85
+#84 85 84 85 84 85 84 85 84 85 84 85 84 85 84 85
+
+# CMD_PREDIV clkdiv=3'b010(/2) clkpre=2'b00(/1) cmd=2'b10(CMD_PREDIV=2) = 0100010x
+44 45 44 45 44 45 44 45 44 45 44 45 44 45 44 45
+
+# CMD_DATA = 0......x (reset sequence cooldown)
+80 81 80 81 80 81 80 81
+
+# CMD_PRERET en=1'b0(off) ret=4'b0000(off)     cmd=2'b11(CMD_PRERET=3) = 0000011x
+06 07 06 07 06 07 06 07 06 07 06 07 06 07 06 07
+
+# CMD_PRERET en=1'b1(on)  ret=4'b1000(every 8) cmd=2'b11(CMD_PRERET=3) = 1100011x
+#c6 c7 c6 c7 c6 c7 c6 c7 c6 c7 c6 c7 c6 c7 c6 c7
 
 # CMD_DATA = 0......x (reset sequence cooldown)
 80 81 80 81 80 81 80 81
