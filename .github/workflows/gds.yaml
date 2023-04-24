@@ -130,6 +130,7 @@ jobs:
 
     # yosys warnings
     - name: yosys warnings
+      if: success() || failure()
       run: ./tt/tt_tool.py --print-warnings >> $GITHUB_STEP_SUMMARY
 
     # print some routing stats
