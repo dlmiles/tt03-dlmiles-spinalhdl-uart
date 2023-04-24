@@ -3,8 +3,8 @@ name: gds
 on:
   push:
     branches:
-      - 'main'
       - 'dev'
+      #- 'main'
   workflow_dispatch:
   workflow_run:
     workflows:
