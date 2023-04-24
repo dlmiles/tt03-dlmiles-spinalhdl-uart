@@ -78,4 +78,4 @@ module glitch_free_clock_mux (
 
     assign clk_out = and02 | and12;
 
-endmodule;
+endmodule
