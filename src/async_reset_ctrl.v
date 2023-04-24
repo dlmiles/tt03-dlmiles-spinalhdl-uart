@@ -74,7 +74,8 @@ module async_reset_ctrl (
       .s   (set),		// rs_reset_priority_inverted
       .r   (reset),		// dff3q_inverted
       .clr (sim_resetn),
-      .q   (rs1q)
+      .q   (rs1q),
+      .qn  (/*nc*/)
     );
 
     assign reset_out = dff3q;
