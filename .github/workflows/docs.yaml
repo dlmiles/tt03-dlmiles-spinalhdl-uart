@@ -3,6 +3,7 @@ name: docs
 on:
   push:
     branches:
+      - 'main'
       - 'dev'
   workflow_dispatch:
   workflow_run:
