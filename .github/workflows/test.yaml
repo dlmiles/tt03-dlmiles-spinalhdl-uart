@@ -6,14 +6,14 @@ on:
       - 'dev'
       #- 'main'
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - 'spinalhdl'
-    branches:
-      #- 'main'
-      - 'dev'
-    types:
-      - completed
+  #workflow_run:
+  #  workflows:
+  #    - 'spinalhdl'
+  #  branches:
+  #    #- 'main'
+  #    - 'dev'
+  #  types:
+  #    - completed
 
 jobs:
   test:
