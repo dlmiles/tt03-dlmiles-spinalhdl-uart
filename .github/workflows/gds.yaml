@@ -10,7 +10,7 @@ on:
     workflows:
       - 'spinalhdl'
     branches:
-      - 'main'
+      #- 'main'
       - 'dev'
     types:
       - completed
