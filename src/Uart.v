@@ -22,164 +22,171 @@ module Uart (
   localparam UartParityType_ODD = 2'd1;
   localparam UartParityType_EVEN = 2'd2;
 
+  wire                area_rxStateMachine_shifter_io_en;
   wire                clockPrescalerRetarder_stretcher_clock_out;
   wire                rxd_buffercc_io_dataOut;
-  wire       [6:0]    rxStateMachine_shifter_io_output7;
-  wire       [7:0]    rxStateMachine_shifter_io_output8;
-  reg                 _zz_clockPrescaledOut;
-  wire       [3:0]    _zz_when_Uart_l439;
-  wire                _zz_sampler_value;
-  wire                _zz_sampler_value_1;
-  wire                _zz_sampler_value_2;
-  wire                _zz_sampler_value_3;
-  wire                _zz_sampler_value_4;
-  wire                _zz_sampler_value_5;
-  wire                _zz_sampler_value_6;
-  wire       [3:0]    _zz_when_Uart_l669;
-  wire       [0:0]    _zz_when_Uart_l669_1;
+  wire       [6:0]    area_rxStateMachine_shifter_io_output7;
+  wire       [7:0]    area_rxStateMachine_shifter_io_output8;
+  reg                 _zz_clockPrescaledRipplerOut;
+  wire       [3:0]    _zz_when_Uart_l505;
+  wire                _zz_area_sampler_value;
+  wire                _zz_area_sampler_value_1;
+  wire                _zz_area_sampler_value_2;
+  wire                _zz_area_sampler_value_3;
+  wire                _zz_area_sampler_value_4;
+  wire                _zz_area_sampler_value_5;
+  wire                _zz_area_sampler_value_6;
+  wire       [7:0]    _zz_area_rxStateMachine_shifterOutputSized;
+  wire       [3:0]    _zz_when_Uart_l823;
+  wire       [3:0]    _zz_when_Uart_l847;
   wire       [1:0]    cmd;
   reg                 rxdLast;
   reg                 rxd;
-  wire                when_Uart_l320;
+  wire                when_Uart_l360;
   reg                 modeData7;
   reg        [1:0]    modeParity;
   reg        [1:0]    modeStop;
-  reg        [3:0]    dataLength;
+  reg        [2:0]    dataLengthZeroBased;
+  reg        [0:0]    stopBitsZeroBased;
+  wire                stopBitsIsHalf;
+  wire                when_Uart_l384;
   reg        [1:0]    regPredivRpl;
   reg        [2:0]    regPredivCtr;
   reg                 regPreretEna;
   reg        [3:0]    regPreretCtr;
   reg        [7:0]    bufVec_0;
   reg                 bufPresent_0;
+  reg                 rxBreakLatch;
   wire                rxErrorParity;
   wire                rxErrorStop;
   reg                 rxMasterClock;
-  wire                when_Uart_l369;
-  wire                when_Uart_l377;
-  wire                when_Uart_l383;
-  wire                when_Uart_l386;
-  wire                clockPrescalerDivider_taps_0;
-  wire                clockPrescalerDivider_taps_1;
-  wire                clockPrescalerDivider_taps_2;
-  wire                clockPrescalerDivider_taps_3;
-  reg        [0:0]    _zz_clockPrescalerDivider_taps_1;
-  reg        [0:0]    _zz_clockPrescalerDivider_taps_2;
-  reg        [0:0]    _zz_clockPrescalerDivider_taps_3;
-  wire                clockPrescaledOut;
+  wire                when_Uart_l419;
+  wire                when_Uart_l427;
+  wire                when_Uart_l433;
+  wire                when_Uart_l436;
+  wire                clockPrescalerRippler_taps_0;
+  wire                clockPrescalerRippler_taps_1;
+  wire                clockPrescalerRippler_taps_2;
+  wire                clockPrescalerRippler_taps_3;
+  reg        [0:0]    _zz_clockPrescalerRippler_taps_1;
+  reg        [0:0]    _zz_clockPrescalerRippler_taps_2;
+  reg        [0:0]    _zz_clockPrescalerRippler_taps_3;
+  wire                clockPrescaledRipplerOut;
   reg        [3:0]    clockPrescalerCounter_counter;
+  wire                clockPrescalerCounter_initialState;
   reg                 clockPrescalerCounter_tick;
-  wire                clockPrescalerCounter_clockPrescalerCounterInputTick;
-  wire                when_Uart_l439;
+  wire                when_Uart_l504;
+  wire                when_Uart_l505;
   wire                stretcherClockIn;
   reg        [3:0]    clockPrescalerRetarder_counter;
   reg                 clockPrescalerRetarder_sel;
-  wire                when_Uart_l452;
-  wire                when_Uart_l454;
-  reg        [0:0]    samplingTicker_counter;
-  reg                 samplingTicker_tick;
-  wire                samplingTicker_samplingTickerInputTick;
-  wire                when_Uart_l481;
-  wire                when_Uart_l483;
-  wire                samplingTick;
-  wire                samplingTickCmdData;
-  reg                 samplingTickCmdDataRegNext;
-  wire                sampler_synchroniser;
-  wire                sampler_samples_0;
-  reg                 sampler_samples_1;
-  reg                 sampler_samples_2;
-  reg                 sampler_samples_3;
-  reg                 sampler_samples_4;
-  reg                 sampler_value;
-  reg                 sampler_tick;
-  reg        [2:0]    rxBitTimer_counter;
-  reg                 rxBitTimer_tick;
-  wire                when_Uart_l545;
-  reg        [3:0]    rxBitCounter_value;
-  reg        [6:0]    rxBreak_counter;
-  wire                rxBreak_valid;
-  wire                when_Uart_l588;
-  reg        [2:0]    rxStateMachine_state;
-  reg                 rxStateMachine_parity;
-  reg                 rxStateMachine_shifterVec_0;
-  reg                 rxStateMachine_shifterVec_1;
-  reg                 rxStateMachine_shifterVec_2;
-  reg                 rxStateMachine_shifterVec_3;
-  reg                 rxStateMachine_shifterVec_4;
-  reg                 rxStateMachine_shifterVec_5;
-  reg                 rxStateMachine_shifterVec_6;
-  reg                 rxStateMachine_shifterVec_7;
-  wire                when_Uart_l617;
-  wire                when_Uart_l622;
-  wire                when_Uart_l633;
-  wire       [7:0]    _zz_1;
-  wire                when_Uart_l643;
-  wire                when_Uart_l646;
-  wire                when_Uart_l659;
-  wire                when_Uart_l667;
-  wire                when_Uart_l669;
-  wire                when_Uart_l682;
+  wire                when_Uart_l537;
+  wire                when_Uart_l539;
+  reg        [0:0]    area_samplingTicker_counter;
+  reg                 area_samplingTicker_tick;
+  wire                area_samplingTicker_samplingTickerInputTick;
+  wire                when_Uart_l581;
+  wire                when_Uart_l583;
+  wire                area_samplingTick;
+  wire                area_samplingTickCmdData;
+  wire                area_sampler_synchroniser;
+  wire                area_sampler_samples0_0;
+  reg                 area_sampler_samples0_1;
+  reg                 area_sampler_samples0_2;
+  reg                 area_sampler_samples0_3;
+  reg                 area_sampler_samples0_4;
+  wire                area_sampler_inputBuffer;
+  reg                 area_sampler_regSamples_0;
+  reg                 area_sampler_regSamples_1;
+  reg                 area_sampler_regSamples_2;
+  reg                 area_sampler_regSamples_3;
+  reg                 area_sampler_regSamples_4;
+  reg                 area_sampler_value;
+  reg                 area_sampler_tick;
+  reg        [2:0]    area_rxBitTimer_counter;
+  reg                 area_rxBitTimer_tick;
+  wire                when_Uart_l685;
+  reg        [3:0]    area_rxBitCounter_value;
+  reg        [6:0]    area_rxBreak_counter;
+  wire                area_rxBreak_valid;
+  wire                when_Uart_l732;
+  reg                 area_rxBreak_valid_regNext;
+  wire                when_Uart_l736;
+  reg        [2:0]    area_rxStateMachine_state;
+  reg                 area_rxStateMachine_parity;
+  wire       [7:0]    area_rxStateMachine_shifterOutputSized;
+  wire                when_Uart_l777;
+  wire                when_Uart_l790;
+  wire                when_Uart_l813;
+  wire                when_Uart_l823;
+  wire                when_Uart_l824;
+  wire                when_Uart_l838;
+  wire                when_Uart_l845;
+  wire                when_Uart_l847;
+  wire                when_Uart_l864;
   `ifndef SYNTHESIS
-  reg [63:0] rxStateMachine_state_string;
+  reg [63:0] area_rxStateMachine_state_string;
   `endif
 
 
-  assign _zz_when_Uart_l439 = {1'd0, regPredivCtr};
-  assign _zz_when_Uart_l669_1 = 1'b1;
-  assign _zz_when_Uart_l669 = {3'd0, _zz_when_Uart_l669_1};
-  assign _zz_sampler_value = ((((1'b0 || ((_zz_sampler_value_1 && sampler_samples_1) && sampler_samples_2)) || (((_zz_sampler_value_2 && sampler_samples_0) && sampler_samples_1) && sampler_samples_3)) || (((1'b1 && sampler_samples_0) && sampler_samples_2) && sampler_samples_3)) || (((1'b1 && sampler_samples_1) && sampler_samples_2) && sampler_samples_3));
-  assign _zz_sampler_value_3 = (((1'b1 && sampler_samples_0) && sampler_samples_1) && sampler_samples_4);
-  assign _zz_sampler_value_4 = ((1'b1 && sampler_samples_0) && sampler_samples_2);
-  assign _zz_sampler_value_5 = (1'b1 && sampler_samples_1);
-  assign _zz_sampler_value_6 = 1'b1;
-  assign _zz_sampler_value_1 = (1'b1 && sampler_samples_0);
-  assign _zz_sampler_value_2 = 1'b1;
+  assign _zz_when_Uart_l505 = {1'd0, regPredivCtr};
+  assign _zz_area_rxStateMachine_shifterOutputSized = {1'd0, area_rxStateMachine_shifter_io_output7};
+  assign _zz_when_Uart_l823 = {1'd0, dataLengthZeroBased};
+  assign _zz_when_Uart_l847 = {3'd0, stopBitsZeroBased};
+  assign _zz_area_sampler_value = ((((1'b0 || ((_zz_area_sampler_value_1 && area_sampler_regSamples_1) && area_sampler_regSamples_2)) || (((_zz_area_sampler_value_2 && area_sampler_regSamples_0) && area_sampler_regSamples_1) && area_sampler_regSamples_3)) || (((1'b1 && area_sampler_regSamples_0) && area_sampler_regSamples_2) && area_sampler_regSamples_3)) || (((1'b1 && area_sampler_regSamples_1) && area_sampler_regSamples_2) && area_sampler_regSamples_3));
+  assign _zz_area_sampler_value_3 = (((1'b1 && area_sampler_regSamples_0) && area_sampler_regSamples_1) && area_sampler_regSamples_4);
+  assign _zz_area_sampler_value_4 = ((1'b1 && area_sampler_regSamples_0) && area_sampler_regSamples_2);
+  assign _zz_area_sampler_value_5 = (1'b1 && area_sampler_regSamples_1);
+  assign _zz_area_sampler_value_6 = 1'b1;
+  assign _zz_area_sampler_value_1 = (1'b1 && area_sampler_regSamples_0);
+  assign _zz_area_sampler_value_2 = 1'b1;
   clock_stretch_invert_mux clockPrescalerRetarder_stretcher (
     .clock_out (clockPrescalerRetarder_stretcher_clock_out), //o
     .clock_in  (stretcherClockIn                          ), //i
     .sel       (clockPrescalerRetarder_sel                )  //i
   );
   BufferCC rxd_buffercc (
-    .io_dataIn  (rxd                    ), //i
-    .io_dataOut (rxd_buffercc_io_dataOut), //o
-    .clk        (clk                    ), //i
-    .reset      (reset                  )  //i
+    .io_dataIn  (rxd                                       ), //i
+    .io_dataOut (rxd_buffercc_io_dataOut                   ), //o
+    .clock_out  (clockPrescalerRetarder_stretcher_clock_out), //i
+    .reset      (reset                                     )  //i
   );
-  ShiftRegisterSerialInParallelOut rxStateMachine_shifter (
-    .io_clk     (rxBitTimer_tick                       ), //i
-    .io_input   (sampler_value                         ), //i
-    .io_en      (1'b1                                  ), //i
-    .io_output7 (rxStateMachine_shifter_io_output7[6:0]), //o
-    .io_output8 (rxStateMachine_shifter_io_output8[7:0]), //o
-    .reset      (reset                                 )  //i
+  ShiftRegisterSerialInParallelOut area_rxStateMachine_shifter (
+    .io_clk     (area_rxBitTimer_tick                       ), //i
+    .io_input   (area_sampler_value                         ), //i
+    .io_en      (area_rxStateMachine_shifter_io_en          ), //i
+    .io_output7 (area_rxStateMachine_shifter_io_output7[6:0]), //o
+    .io_output8 (area_rxStateMachine_shifter_io_output8[7:0]), //o
+    .reset      (reset                                      )  //i
   );
   always @(*) begin
     case(regPredivRpl)
-      2'b00 : _zz_clockPrescaledOut = clockPrescalerDivider_taps_0;
-      2'b01 : _zz_clockPrescaledOut = clockPrescalerDivider_taps_1;
-      2'b10 : _zz_clockPrescaledOut = clockPrescalerDivider_taps_2;
-      default : _zz_clockPrescaledOut = clockPrescalerDivider_taps_3;
+      2'b00 : _zz_clockPrescaledRipplerOut = clockPrescalerRippler_taps_0;
+      2'b01 : _zz_clockPrescaledRipplerOut = clockPrescalerRippler_taps_1;
+      2'b10 : _zz_clockPrescaledRipplerOut = clockPrescalerRippler_taps_2;
+      default : _zz_clockPrescaledRipplerOut = clockPrescalerRippler_taps_3;
     endcase
   end
 
   `ifndef SYNTHESIS
   always @(*) begin
-    case(rxStateMachine_state)
-      UartCtrlRxState_WAITMARK : rxStateMachine_state_string = "WAITMARK";
-      UartCtrlRxState_IDLE : rxStateMachine_state_string = "IDLE    ";
-      UartCtrlRxState_START : rxStateMachine_state_string = "START   ";
-      UartCtrlRxState_DATA : rxStateMachine_state_string = "DATA    ";
-      UartCtrlRxState_PARITY : rxStateMachine_state_string = "PARITY  ";
-      UartCtrlRxState_STOP : rxStateMachine_state_string = "STOP    ";
-      default : rxStateMachine_state_string = "????????";
+    case(area_rxStateMachine_state)
+      UartCtrlRxState_WAITMARK : area_rxStateMachine_state_string = "WAITMARK";
+      UartCtrlRxState_IDLE : area_rxStateMachine_state_string = "IDLE    ";
+      UartCtrlRxState_START : area_rxStateMachine_state_string = "START   ";
+      UartCtrlRxState_DATA : area_rxStateMachine_state_string = "DATA    ";
+      UartCtrlRxState_PARITY : area_rxStateMachine_state_string = "PARITY  ";
+      UartCtrlRxState_STOP : area_rxStateMachine_state_string = "STOP    ";
+      default : area_rxStateMachine_state_string = "????????";
     endcase
   end
   `endif
 
   assign io_gatedTxdStopBitSupport = 1'b0;
   assign cmd = io_in7[1 : 0];
-  assign when_Uart_l320 = (cmd == 2'b00);
+  assign when_Uart_l360 = (cmd == 2'b00);
   always @(*) begin
-    if(when_Uart_l320) begin
+    if(when_Uart_l360) begin
       rxd = io_in7[6];
     end else begin
       rxd = rxdLast;
@@ -188,47 +195,36 @@ module Uart (
 
   always @(*) begin
     if(modeData7) begin
-      dataLength = 4'b0111;
+      dataLengthZeroBased = 3'b110;
     end else begin
-      dataLength = 4'b1000;
+      dataLengthZeroBased = 3'b111;
+    end
+  end
+
+  assign stopBitsIsHalf = modeStop[1];
+  assign when_Uart_l384 = (modeStop == 2'b00);
+  always @(*) begin
+    if(when_Uart_l384) begin
+      stopBitsZeroBased = 1'b0;
+    end else begin
+      stopBitsZeroBased = 1'b1;
     end
   end
 
   always @(*) begin
     io_out8 = 8'h00;
-    if(when_Uart_l369) begin
-      if(when_Uart_l377) begin
+    if(when_Uart_l419) begin
+      if(when_Uart_l427) begin
         io_out8[4] = 1'b1;
       end
       io_out8[5] = 1'b1;
     end
     io_out8[1] = clockPrescalerRetarder_stretcher_clock_out;
-    io_out8[2] = sampler_tick;
-    io_out8[3] = rxBitTimer_tick;
-    io_out8[7 : 4] = rxBitCounter_value;
-    io_out8[0] = rxBreak_valid;
-    case(rxStateMachine_state)
-      UartCtrlRxState_WAITMARK : begin
-      end
-      UartCtrlRxState_IDLE : begin
-      end
-      UartCtrlRxState_START : begin
-      end
-      UartCtrlRxState_DATA : begin
-      end
-      UartCtrlRxState_PARITY : begin
-      end
-      default : begin
-        if(rxBitTimer_tick) begin
-          if(!when_Uart_l667) begin
-            if(when_Uart_l669) begin
-              io_out8 = rxStateMachine_shifter_io_output8;
-            end
-          end
-        end
-      end
-    endcase
-    if(when_Uart_l682) begin
+    io_out8[2] = area_sampler_tick;
+    io_out8[3] = area_rxBitTimer_tick;
+    io_out8[7 : 4] = area_rxBitCounter_value;
+    io_out8[0] = area_rxBreak_valid;
+    if(when_Uart_l864) begin
       if(bufPresent_0) begin
         io_out8 = bufVec_0;
       end
@@ -237,8 +233,8 @@ module Uart (
 
   always @(*) begin
     io_resetCommandStrobe = 1'b0;
-    if(when_Uart_l369) begin
-      if(when_Uart_l377) begin
+    if(when_Uart_l419) begin
+      if(when_Uart_l427) begin
         io_resetCommandStrobe = 1'b1;
       end
     end
@@ -246,58 +242,62 @@ module Uart (
 
   always @(*) begin
     rxMasterClock = 1'b0;
-    if(!when_Uart_l369) begin
-      if(!when_Uart_l383) begin
-        if(!when_Uart_l386) begin
+    if(!when_Uart_l419) begin
+      if(!when_Uart_l433) begin
+        if(!when_Uart_l436) begin
           rxMasterClock = clk;
         end
       end
     end
   end
 
-  assign when_Uart_l369 = (cmd == 2'b01);
-  assign when_Uart_l377 = (io_in7[6 : 5] == 2'b11);
-  assign when_Uart_l383 = (cmd == 2'b10);
-  assign when_Uart_l386 = (cmd == 2'b11);
-  assign clockPrescalerDivider_taps_0 = rxMasterClock;
-  assign clockPrescalerDivider_taps_1 = _zz_clockPrescalerDivider_taps_1[0];
-  assign clockPrescalerDivider_taps_2 = _zz_clockPrescalerDivider_taps_2[0];
-  assign clockPrescalerDivider_taps_3 = _zz_clockPrescalerDivider_taps_3[0];
-  assign clockPrescaledOut = _zz_clockPrescaledOut;
-  assign clockPrescalerCounter_clockPrescalerCounterInputTick = ((regPredivRpl != 2'b00) ? clockPrescaledOut : 1'b1);
-  assign when_Uart_l439 = (clockPrescalerCounter_counter == _zz_when_Uart_l439);
-  assign stretcherClockIn = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clk);
-  assign when_Uart_l452 = (regPreretCtr != 4'b0000);
-  assign when_Uart_l454 = (clockPrescalerRetarder_counter == 4'b0000);
-  assign samplingTicker_samplingTickerInputTick = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clk);
-  assign when_Uart_l481 = 1'b1;
-  assign when_Uart_l483 = (samplingTicker_counter == 1'b0);
-  assign samplingTick = clockPrescalerRetarder_stretcher_clock_out;
-  assign samplingTickCmdData = (samplingTick && (cmd == 2'b00));
-  assign sampler_synchroniser = rxd_buffercc_io_dataOut;
-  assign sampler_samples_0 = sampler_synchroniser;
+  assign when_Uart_l419 = (cmd == 2'b01);
+  assign when_Uart_l427 = (io_in7[6 : 5] == 2'b11);
+  assign when_Uart_l433 = (cmd == 2'b10);
+  assign when_Uart_l436 = (cmd == 2'b11);
+  assign clockPrescalerRippler_taps_0 = rxMasterClock;
+  assign clockPrescalerRippler_taps_1 = _zz_clockPrescalerRippler_taps_1[0];
+  assign clockPrescalerRippler_taps_2 = _zz_clockPrescalerRippler_taps_2[0];
+  assign clockPrescalerRippler_taps_3 = _zz_clockPrescalerRippler_taps_3[0];
+  assign clockPrescaledRipplerOut = _zz_clockPrescaledRipplerOut;
+  assign clockPrescalerCounter_initialState = 1'b1;
+  assign when_Uart_l504 = (regPredivCtr != 3'b000);
+  assign when_Uart_l505 = (clockPrescalerCounter_counter == _zz_when_Uart_l505);
+  assign stretcherClockIn = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clockPrescaledRipplerOut);
+  assign when_Uart_l537 = (regPreretCtr != 4'b0000);
+  assign when_Uart_l539 = (clockPrescalerRetarder_counter == 4'b0000);
+  assign area_samplingTicker_samplingTickerInputTick = ((regPredivCtr != 3'b000) ? clockPrescalerCounter_tick : clockPrescalerRetarder_stretcher_clock_out);
+  assign when_Uart_l581 = 1'b1;
+  assign when_Uart_l583 = (area_samplingTicker_counter == 1'b0);
+  assign area_samplingTick = clockPrescalerRetarder_stretcher_clock_out;
+  assign area_samplingTickCmdData = (area_samplingTick && (cmd == 2'b00));
+  assign area_sampler_synchroniser = rxd_buffercc_io_dataOut;
+  assign area_sampler_samples0_0 = area_sampler_synchroniser;
+  assign area_sampler_inputBuffer = area_sampler_synchroniser;
   always @(*) begin
-    rxBitTimer_tick = 1'b0;
-    if(sampler_tick) begin
-      if(when_Uart_l545) begin
-        rxBitTimer_tick = 1'b1;
+    area_rxBitTimer_tick = 1'b0;
+    if(area_sampler_tick) begin
+      if(when_Uart_l685) begin
+        area_rxBitTimer_tick = 1'b1;
       end
     end
   end
 
-  assign when_Uart_l545 = (rxBitTimer_counter == 3'b000);
-  assign rxBreak_valid = (rxBreak_counter == 7'h68);
-  assign when_Uart_l588 = (samplingTickCmdData && (! rxBreak_valid));
-  assign when_Uart_l617 = (sampler_value == 1'b1);
-  assign when_Uart_l622 = (sampler_value == 1'b0);
-  assign when_Uart_l633 = (sampler_value == 1'b1);
-  assign _zz_1 = ({7'd0,1'b1} <<< rxBitCounter_value[2 : 0]);
-  assign when_Uart_l643 = (rxBitCounter_value == dataLength);
-  assign when_Uart_l646 = (modeParity == UartParityType_NONE);
-  assign when_Uart_l659 = (rxStateMachine_parity != sampler_value);
-  assign when_Uart_l667 = (! sampler_value);
-  assign when_Uart_l669 = (rxBitCounter_value == _zz_when_Uart_l669);
-  assign when_Uart_l682 = (cmd == 2'b00);
+  assign when_Uart_l685 = (area_rxBitTimer_counter == 3'b000);
+  assign area_rxBreak_valid = (area_rxBreak_counter == 7'h68);
+  assign when_Uart_l732 = (area_samplingTickCmdData && (! area_rxBreak_valid));
+  assign when_Uart_l736 = (area_rxBreak_valid && (! area_rxBreak_valid_regNext));
+  assign area_rxStateMachine_shifter_io_en = (area_rxStateMachine_state == UartCtrlRxState_DATA);
+  assign area_rxStateMachine_shifterOutputSized = (modeData7 ? _zz_area_rxStateMachine_shifterOutputSized : area_rxStateMachine_shifter_io_output8);
+  assign when_Uart_l777 = (area_sampler_value == 1'b1);
+  assign when_Uart_l790 = (area_sampler_value == 1'b0);
+  assign when_Uart_l813 = (area_sampler_value == 1'b1);
+  assign when_Uart_l823 = (area_rxBitCounter_value == _zz_when_Uart_l823);
+  assign when_Uart_l824 = (modeParity == UartParityType_NONE);
+  assign when_Uart_l838 = (area_rxStateMachine_parity != area_sampler_value);
+  assign when_Uart_l845 = (! area_sampler_value);
+  assign when_Uart_l847 = (area_rxBitCounter_value == _zz_when_Uart_l847);
+  assign when_Uart_l864 = (cmd == 2'b00);
   always @(posedge clk or posedge reset) begin
     if(reset) begin
       rxdLast <= 1'b1;
@@ -308,142 +308,59 @@ module Uart (
       regPredivCtr <= 3'b000;
       regPreretEna <= 1'b0;
       regPreretCtr <= 4'b0000;
-      bufVec_0 <= 8'h00;
       bufPresent_0 <= 1'b0;
-      clockPrescalerCounter_counter <= 4'b0000;
-      clockPrescalerCounter_tick <= 1'b0;
+      rxBreakLatch <= 1'b0;
       clockPrescalerRetarder_counter <= 4'b0000;
       clockPrescalerRetarder_sel <= 1'b0;
-      samplingTicker_counter <= 1'b0;
-      samplingTicker_tick <= 1'b0;
-      sampler_samples_1 <= 1'b1;
-      sampler_samples_2 <= 1'b1;
-      sampler_samples_3 <= 1'b1;
-      sampler_samples_4 <= 1'b1;
-      sampler_value <= 1'b1;
-      sampler_tick <= 1'b1;
-      rxBitTimer_counter <= 3'b000;
-      rxBitCounter_value <= 4'b0000;
-      rxBreak_counter <= 7'h00;
-      rxStateMachine_state <= UartCtrlRxState_WAITMARK;
     end else begin
-      if(when_Uart_l320) begin
+      if(when_Uart_l360) begin
         rxdLast <= io_in7[6];
       end
-      if(when_Uart_l369) begin
+      if(when_Uart_l419) begin
         modeData7 <= io_in7[2];
         modeParity <= io_in7[4 : 3];
         modeStop <= io_in7[6 : 5];
       end else begin
-        if(when_Uart_l383) begin
+        if(when_Uart_l433) begin
           regPredivRpl <= io_in7[3 : 2];
           regPredivCtr <= io_in7[6 : 4];
         end else begin
-          if(when_Uart_l386) begin
+          if(when_Uart_l436) begin
             regPreretEna <= io_in7[6];
             regPreretCtr <= io_in7[5 : 2];
           end
         end
       end
-      if(clockPrescalerCounter_clockPrescalerCounterInputTick) begin
-        clockPrescalerCounter_counter <= (clockPrescalerCounter_counter + 4'b0001);
-        if(when_Uart_l439) begin
-          clockPrescalerCounter_counter <= 4'b0000;
-          clockPrescalerCounter_tick <= (! clockPrescalerCounter_tick);
-        end
-      end
-      if(when_Uart_l452) begin
+      if(when_Uart_l537) begin
         clockPrescalerRetarder_counter <= (clockPrescalerRetarder_counter - 4'b0001);
-        if(when_Uart_l454) begin
+        if(when_Uart_l539) begin
           clockPrescalerRetarder_counter <= regPreretCtr;
           clockPrescalerRetarder_sel <= (! clockPrescalerRetarder_sel);
         end
       end else begin
         clockPrescalerRetarder_sel <= 1'b0;
       end
-      samplingTicker_tick <= 1'b0;
-      if(when_Uart_l481) begin
-        samplingTicker_counter <= (samplingTicker_counter - 1'b1);
-        if(when_Uart_l483) begin
-          samplingTicker_tick <= 1'b1;
+      if(!area_sampler_value) begin
+        if(when_Uart_l736) begin
+          rxBreakLatch <= 1'b1;
         end
       end
-      if(samplingTickCmdDataRegNext) begin
-        sampler_samples_1 <= sampler_samples_0;
-      end
-      if(samplingTickCmdDataRegNext) begin
-        sampler_samples_2 <= sampler_samples_1;
-      end
-      if(samplingTickCmdDataRegNext) begin
-        sampler_samples_3 <= sampler_samples_2;
-      end
-      if(samplingTickCmdDataRegNext) begin
-        sampler_samples_4 <= sampler_samples_3;
-      end
-      sampler_value <= ((((((_zz_sampler_value || _zz_sampler_value_3) || (_zz_sampler_value_4 && sampler_samples_4)) || ((_zz_sampler_value_5 && sampler_samples_2) && sampler_samples_4)) || (((_zz_sampler_value_6 && sampler_samples_0) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_1) && sampler_samples_3) && sampler_samples_4)) || (((1'b1 && sampler_samples_2) && sampler_samples_3) && sampler_samples_4));
-      sampler_tick <= samplingTickCmdDataRegNext;
-      if(sampler_tick) begin
-        rxBitTimer_counter <= (rxBitTimer_counter - 3'b001);
-      end
-      if(rxBitTimer_tick) begin
-        rxBitCounter_value <= (rxBitCounter_value + 4'b0001);
-      end
-      if(sampler_value) begin
-        rxBreak_counter <= 7'h00;
-      end else begin
-        if(when_Uart_l588) begin
-          rxBreak_counter <= (rxBreak_counter + 7'h01);
-        end
-      end
-      case(rxStateMachine_state)
+      case(area_rxStateMachine_state)
         UartCtrlRxState_WAITMARK : begin
-          if(when_Uart_l617) begin
-            rxStateMachine_state <= UartCtrlRxState_IDLE;
-          end
         end
         UartCtrlRxState_IDLE : begin
-          if(when_Uart_l622) begin
-            rxStateMachine_state <= UartCtrlRxState_START;
-            rxBitTimer_counter <= 3'b010;
-          end
         end
         UartCtrlRxState_START : begin
-          rxStateMachine_state <= UartCtrlRxState_DATA;
-          rxBitCounter_value <= 4'b0000;
-          if(when_Uart_l633) begin
-            rxStateMachine_state <= UartCtrlRxState_IDLE;
-          end
         end
         UartCtrlRxState_DATA : begin
           bufPresent_0 <= 1'b0;
-          if(rxBitTimer_tick) begin
-            if(when_Uart_l643) begin
-              bufVec_0 <= rxStateMachine_shifter_io_output8;
-              rxBitCounter_value <= 4'b0000;
-              if(when_Uart_l646) begin
-                rxStateMachine_state <= UartCtrlRxState_STOP;
-              end else begin
-                rxStateMachine_state <= UartCtrlRxState_PARITY;
-              end
-            end
-          end
         end
         UartCtrlRxState_PARITY : begin
-          if(rxBitTimer_tick) begin
-            rxStateMachine_state <= UartCtrlRxState_STOP;
-            rxBitCounter_value <= 4'b0000;
-            if(when_Uart_l659) begin
-              rxStateMachine_state <= UartCtrlRxState_IDLE;
-            end
-          end
         end
         default : begin
-          if(rxBitTimer_tick) begin
-            if(when_Uart_l667) begin
-              rxStateMachine_state <= UartCtrlRxState_IDLE;
-            end else begin
-              if(when_Uart_l669) begin
-                rxStateMachine_state <= UartCtrlRxState_IDLE;
+          if(area_rxBitTimer_tick) begin
+            if(!when_Uart_l845) begin
+              if(when_Uart_l847) begin
                 bufPresent_0 <= 1'b1;
               end
             end
@@ -453,74 +370,230 @@ module Uart (
     end
   end
 
-  always @(posedge clockPrescalerDivider_taps_0 or posedge reset) begin
+  always @(posedge clockPrescalerRippler_taps_0 or posedge reset) begin
     if(reset) begin
-      _zz_clockPrescalerDivider_taps_1 <= 1'b0;
+      _zz_clockPrescalerRippler_taps_1 <= 1'b0;
     end else begin
-      _zz_clockPrescalerDivider_taps_1 <= (~ _zz_clockPrescalerDivider_taps_1);
+      _zz_clockPrescalerRippler_taps_1 <= (~ _zz_clockPrescalerRippler_taps_1);
     end
   end
 
-  always @(posedge clockPrescalerDivider_taps_1 or posedge reset) begin
+  always @(posedge clockPrescalerRippler_taps_1 or posedge reset) begin
     if(reset) begin
-      _zz_clockPrescalerDivider_taps_2 <= 1'b0;
+      _zz_clockPrescalerRippler_taps_2 <= 1'b0;
     end else begin
-      _zz_clockPrescalerDivider_taps_2 <= (~ _zz_clockPrescalerDivider_taps_2);
+      _zz_clockPrescalerRippler_taps_2 <= (~ _zz_clockPrescalerRippler_taps_2);
     end
   end
 
-  always @(posedge clockPrescalerDivider_taps_2 or posedge reset) begin
+  always @(posedge clockPrescalerRippler_taps_2 or posedge reset) begin
     if(reset) begin
-      _zz_clockPrescalerDivider_taps_3 <= 1'b0;
+      _zz_clockPrescalerRippler_taps_3 <= 1'b0;
     end else begin
-      _zz_clockPrescalerDivider_taps_3 <= (~ _zz_clockPrescalerDivider_taps_3);
+      _zz_clockPrescalerRippler_taps_3 <= (~ _zz_clockPrescalerRippler_taps_3);
     end
   end
 
-  always @(posedge clk) begin
-    samplingTickCmdDataRegNext <= samplingTickCmdData;
-    if(rxBitTimer_tick) begin
-      rxStateMachine_parity <= (rxStateMachine_parity ^ sampler_value);
+  always @(posedge clockPrescaledRipplerOut or posedge reset) begin
+    if(reset) begin
+      clockPrescalerCounter_counter <= 4'b0000;
+      clockPrescalerCounter_tick <= clockPrescalerCounter_initialState;
+    end else begin
+      if(when_Uart_l504) begin
+        if(when_Uart_l505) begin
+          clockPrescalerCounter_counter <= 4'b0001;
+          clockPrescalerCounter_tick <= (! clockPrescalerCounter_tick);
+        end else begin
+          clockPrescalerCounter_counter <= (clockPrescalerCounter_counter + 4'b0001);
+        end
+      end else begin
+        clockPrescalerCounter_counter <= 4'b0001;
+        clockPrescalerCounter_tick <= clockPrescalerCounter_initialState;
+      end
     end
-    case(rxStateMachine_state)
+  end
+
+  always @(posedge clockPrescalerRetarder_stretcher_clock_out or posedge reset) begin
+    if(reset) begin
+      area_samplingTicker_counter <= 1'b0;
+      area_samplingTicker_tick <= 1'b0;
+      area_sampler_regSamples_0 <= 1'b0;
+      area_sampler_regSamples_1 <= 1'b1;
+      area_sampler_regSamples_2 <= 1'b0;
+      area_sampler_regSamples_3 <= 1'b1;
+      area_sampler_regSamples_4 <= 1'b0;
+      area_sampler_value <= 1'b0;
+      area_sampler_tick <= 1'b0;
+      area_rxBitTimer_counter <= 3'b000;
+      area_rxBitCounter_value <= 4'b0000;
+      area_rxBreak_counter <= 7'h00;
+      area_rxStateMachine_state <= UartCtrlRxState_WAITMARK;
+    end else begin
+      area_samplingTicker_tick <= 1'b0;
+      if(when_Uart_l581) begin
+        area_samplingTicker_counter <= (area_samplingTicker_counter - 1'b1);
+        if(when_Uart_l583) begin
+          area_samplingTicker_tick <= 1'b1;
+        end
+      end
+      if(area_samplingTickCmdData) begin
+        area_sampler_regSamples_0 <= area_sampler_inputBuffer;
+      end
+      if(area_samplingTickCmdData) begin
+        area_sampler_regSamples_1 <= area_sampler_regSamples_0;
+      end
+      if(area_samplingTickCmdData) begin
+        area_sampler_regSamples_2 <= area_sampler_regSamples_1;
+      end
+      if(area_samplingTickCmdData) begin
+        area_sampler_regSamples_3 <= area_sampler_regSamples_2;
+      end
+      if(area_samplingTickCmdData) begin
+        area_sampler_regSamples_4 <= area_sampler_regSamples_3;
+      end
+      area_sampler_value <= ((((((_zz_area_sampler_value || _zz_area_sampler_value_3) || (_zz_area_sampler_value_4 && area_sampler_regSamples_4)) || ((_zz_area_sampler_value_5 && area_sampler_regSamples_2) && area_sampler_regSamples_4)) || (((_zz_area_sampler_value_6 && area_sampler_regSamples_0) && area_sampler_regSamples_3) && area_sampler_regSamples_4)) || (((1'b1 && area_sampler_regSamples_1) && area_sampler_regSamples_3) && area_sampler_regSamples_4)) || (((1'b1 && area_sampler_regSamples_2) && area_sampler_regSamples_3) && area_sampler_regSamples_4));
+      area_sampler_tick <= area_samplingTickCmdData;
+      if(area_sampler_tick) begin
+        area_rxBitTimer_counter <= (area_rxBitTimer_counter - 3'b001);
+      end
+      if(area_rxBitTimer_tick) begin
+        area_rxBitCounter_value <= (area_rxBitCounter_value + 4'b0001);
+      end
+      if(area_sampler_value) begin
+        area_rxBreak_counter <= 7'h00;
+      end else begin
+        if(when_Uart_l732) begin
+          area_rxBreak_counter <= (area_rxBreak_counter + 7'h01);
+        end
+      end
+      case(area_rxStateMachine_state)
+        UartCtrlRxState_WAITMARK : begin
+          if(area_sampler_tick) begin
+            if(when_Uart_l777) begin
+              area_rxStateMachine_state <= UartCtrlRxState_IDLE;
+            end
+          end
+        end
+        UartCtrlRxState_IDLE : begin
+          if(area_sampler_tick) begin
+            if(area_rxBreak_valid) begin
+              area_rxStateMachine_state <= UartCtrlRxState_WAITMARK;
+            end else begin
+              if(when_Uart_l790) begin
+                area_rxStateMachine_state <= UartCtrlRxState_START;
+                area_rxBitTimer_counter <= 3'b101;
+              end
+            end
+          end
+        end
+        UartCtrlRxState_START : begin
+          if(area_rxBitTimer_tick) begin
+            area_rxStateMachine_state <= UartCtrlRxState_DATA;
+            area_rxBitCounter_value <= 4'b0000;
+            if(when_Uart_l813) begin
+              area_rxStateMachine_state <= UartCtrlRxState_IDLE;
+            end
+          end
+        end
+        UartCtrlRxState_DATA : begin
+          if(area_rxBitTimer_tick) begin
+            if(when_Uart_l823) begin
+              if(when_Uart_l824) begin
+                area_rxStateMachine_state <= UartCtrlRxState_STOP;
+                area_rxBitCounter_value <= 4'b0000;
+              end else begin
+                area_rxStateMachine_state <= UartCtrlRxState_PARITY;
+              end
+            end
+          end
+        end
+        UartCtrlRxState_PARITY : begin
+          if(area_rxBitTimer_tick) begin
+            area_rxStateMachine_state <= UartCtrlRxState_STOP;
+            area_rxBitCounter_value <= 4'b0000;
+            if(when_Uart_l838) begin
+              area_rxStateMachine_state <= UartCtrlRxState_IDLE;
+            end
+          end
+        end
+        default : begin
+          if(area_rxBitTimer_tick) begin
+            if(when_Uart_l845) begin
+              area_rxStateMachine_state <= UartCtrlRxState_IDLE;
+            end else begin
+              if(when_Uart_l847) begin
+                area_rxStateMachine_state <= UartCtrlRxState_IDLE;
+              end else begin
+                if(stopBitsIsHalf) begin
+                  area_rxBitTimer_counter <= 3'b100;
+                end
+              end
+            end
+          end
+        end
+      endcase
+    end
+  end
+
+  always @(posedge clockPrescalerRetarder_stretcher_clock_out) begin
+    if(area_samplingTickCmdData) begin
+      area_sampler_samples0_1 <= area_sampler_samples0_0;
+    end
+    if(area_samplingTickCmdData) begin
+      area_sampler_samples0_2 <= area_sampler_samples0_1;
+    end
+    if(area_samplingTickCmdData) begin
+      area_sampler_samples0_3 <= area_sampler_samples0_2;
+    end
+    if(area_samplingTickCmdData) begin
+      area_sampler_samples0_4 <= area_sampler_samples0_3;
+    end
+    if(area_rxBitTimer_tick) begin
+      area_rxStateMachine_parity <= (area_rxStateMachine_parity ^ area_sampler_value);
+    end
+    case(area_rxStateMachine_state)
       UartCtrlRxState_WAITMARK : begin
       end
       UartCtrlRxState_IDLE : begin
       end
       UartCtrlRxState_START : begin
-        rxStateMachine_parity <= (modeParity == UartParityType_ODD);
+        if(area_rxBitTimer_tick) begin
+          area_rxStateMachine_parity <= (modeParity == UartParityType_ODD);
+        end
       end
       UartCtrlRxState_DATA : begin
-        if(rxBitTimer_tick) begin
-          if(_zz_1[0]) begin
-            rxStateMachine_shifterVec_0 <= sampler_value;
-          end
-          if(_zz_1[1]) begin
-            rxStateMachine_shifterVec_1 <= sampler_value;
-          end
-          if(_zz_1[2]) begin
-            rxStateMachine_shifterVec_2 <= sampler_value;
-          end
-          if(_zz_1[3]) begin
-            rxStateMachine_shifterVec_3 <= sampler_value;
-          end
-          if(_zz_1[4]) begin
-            rxStateMachine_shifterVec_4 <= sampler_value;
-          end
-          if(_zz_1[5]) begin
-            rxStateMachine_shifterVec_5 <= sampler_value;
-          end
-          if(_zz_1[6]) begin
-            rxStateMachine_shifterVec_6 <= sampler_value;
-          end
-          if(_zz_1[7]) begin
-            rxStateMachine_shifterVec_7 <= sampler_value;
-          end
-        end
       end
       UartCtrlRxState_PARITY : begin
       end
       default : begin
+      end
+    endcase
+  end
+
+  always @(posedge clockPrescalerRetarder_stretcher_clock_out) begin
+    area_rxBreak_valid_regNext <= area_rxBreak_valid;
+  end
+
+  always @(posedge clk) begin
+    case(area_rxStateMachine_state)
+      UartCtrlRxState_WAITMARK : begin
+      end
+      UartCtrlRxState_IDLE : begin
+      end
+      UartCtrlRxState_START : begin
+      end
+      UartCtrlRxState_DATA : begin
+      end
+      UartCtrlRxState_PARITY : begin
+      end
+      default : begin
+        if(area_rxBitTimer_tick) begin
+          if(!when_Uart_l845) begin
+            if(when_Uart_l847) begin
+              bufVec_0 <= area_rxStateMachine_shifterOutputSized;
+            end
+          end
+        end
       end
     endcase
   end
@@ -567,7 +640,7 @@ endmodule
 module BufferCC (
   input               io_dataIn,
   output              io_dataOut,
-  input               clk,
+  input               clock_out,
   input               reset
 );
 
@@ -575,7 +648,7 @@ module BufferCC (
   (* async_reg = "true" *) reg                 buffers_1;
 
   assign io_dataOut = buffers_1;
-  always @(posedge clk) begin
+  always @(posedge clock_out) begin
     buffers_0 <= io_dataIn;
     buffers_1 <= buffers_0;
   end
