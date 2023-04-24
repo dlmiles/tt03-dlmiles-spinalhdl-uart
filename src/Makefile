@@ -11,7 +11,7 @@ ifneq ($(GATES),yes)
 # this is the only part you should need to modify:
 VERILOG_SOURCES += $(PWD)/tb_uart.v
 VERILOG_SOURCES += $(PWD)/top_tt03_dlmiles_spinalhdl_uart.v
-VERILOG_SOURCES += $(PWD)/dff.v $(PWD)/sr_latch_nand.v $(PWD)/async_reset_ctrl.v $(PWD)/clock_stretch_invert_mux.v
+VERILOG_SOURCES += $(PWD)/dff.v $(PWD)/dffqn_negedge.v $(PWD)/sr_latch_nand.v $(PWD)/async_reset_ctrl.v $(PWD)/clock_stretch_invert_mux.v $(PWD)/glitch_free_clock_mux.v
 #VERILOG_SOURCES += $(PWD)/uart_dummy.v
 VERILOG_SOURCES += $(PWD)/Uart.v
 
