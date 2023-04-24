@@ -51,9 +51,10 @@ set ::env(DECAP_CELL) "\
 set ::env(CLOCK_TREE_SYNTH) 1
 # period is in ns, so 20000ns == 50kHz
 set ::env(CLOCK_PERIOD) "20000"
-# period is in ns, so 100ns == 10MHz
-#set ::env(CLOCK_PERIOD) "100"
 set ::env(CLOCK_PORT) {io_in[0]}
+
+# provide a way for people to stop the resizer from changing cells
+set ::env(RSZ_DONT_TOUCH_RX) "_notouch_"
 
 # hold/slack margin
 # set ::env(PL_RESIZER_HOLD_SLACK_MARGIN) 0.8 
