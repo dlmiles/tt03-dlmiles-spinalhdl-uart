@@ -50,7 +50,7 @@ module clock_stretch_invert_mux (
     //   .sel_delay3half()
     // )
 
-    wire mux_or[2:0];
+    wire [2:0] mux_or;
 
     wire clock_in_inverted;
     assign clock_in_inverted = ~clock_in;
