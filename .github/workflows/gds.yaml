@@ -45,16 +45,16 @@ permissions:
 # 2023.04.12
 # 2023.04.14
 # 2023.04.17
-# 2023.04.18
-# 2023.04.19
-# 2023.04.20	# 
+# 2023.04.18	#  25-rcx_sta.min.rpt hold+VIO   25-rcx_sta.slew.rpt maxFO+warn  blackboxed+warn
+# 2023.04.19	# PARSE ERROR FIRST
+# 2023.04.20	# PARSE ERROR
 #   Error: : during executing sta script /openlane/scripts/openroad/sta/multi_corner.tcl
 #   Error: : Log: ../work/runs/wokwi/logs/routing/16-rsz_design_sta.log
 #   Error: : Last 10 lines:
 #   Reading netlist '/work/runs/wokwi/tmp/15-top_tt03_dlmiles_spinalhdl_uart.nl.v'…
 #   Error: /work/runs/wokwi/tmp/15-top_tt03_dlmiles_spinalhdl_uart.nl.v line 555, syntax error, unexpected ID, expecting ';' or ','
-# 2023.04.27
-# 2023.04.28
+# 2023.04.27	# SAME PARSE ERROR
+# 2023.04.28	# SAME PARSE ERROR
 
 jobs:
   gds:
