@@ -9,6 +9,7 @@ project:
     - dff.v
     - dffqn_negedge.v
     - dff_async_set.v
+    - inverter_reg_ladder.v
     - clock_stretch_invert_mux.v
     - glitch_free_clock_mux.v
     - async_reset_ctrl__dff_async_set.v
