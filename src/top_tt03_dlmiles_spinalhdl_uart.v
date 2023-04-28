@@ -26,59 +26,27 @@ module top_tt03_dlmiles_spinalhdl_uart (
     wire sync_reset;
     wire async_reset;
 
-    reg sim_resetn;
-    reg sim_resetn$1;
-    reg sim_resetn$2;
-    reg sim_resetn$3;
-//    reg sim_resetn$4;
-
-    reg sim_set;
-    reg sim_set$1;
-    reg sim_set$2;
-    reg sim_set$3;
-    reg sim_set$4;
-    reg sim_set$5;
-//    task clear;
-//     begin
-//        sim_resetn = 1;
-//     end
-//    endtask
-//
-//    initial clear;
-
     initial begin
-        sim_resetn$1 = 1;
-        sim_resetn$2 = 0;
-        sim_set$3 = 1;
-        sim_set$4 = 0;
     end
 
     wire resetCommandStrobe;
-    always @ (posedge clk) begin
-        sim_resetn   <= ~sim_resetn$1;		// 1
-        sim_resetn$1 <= ~sim_resetn$2;		// 0
-        sim_resetn$2 <= 1; //~sim_resetn$3;	// 1
-        //sim_resetn$3 <= ~sim_resetn$4;	// 0
-        //sim_resetn$4 <= 1;			// 1
 
-        sim_set   <= ~sim_set$1;	// 0
-        sim_set$1 <= ~sim_set$2;	// 1
-        sim_set$2 <= ~sim_set$3;	// 0
-        sim_set$3 <= ~sim_set$4;	// 1
-        sim_set$4 <= ~sim_set$5;	// 0
-        sim_set$5 <= 1;
-    end
+    wire sim_resetnn;
+    wire sim_sett;
+
+    inverter_reg_ladder #(.STAGES(3)) irl_sim_resetn (.clk(clk), .i(1'b1), .o(sim_resetnn), .taps(/*nc*/));
+    inverter_reg_ladder #(.STAGES(6)) irl_sim_sett   (.clk(clk), .i(1'b1), .o(sim_sett),    .taps(/*nc*/));
 
     // This exists outside the SpinalHDL project as it has async properties
     // SpinalHDL is based around sync design principles that make up the bulk (99.9%) of digital designs.
-    async_reset_ctrl async_reset_ctrl (
+    async_reset_ctrl__dff_async_set async_reset_ctrl (
         .reset_out  	(sync_reset),
         .clk        	(clk),
         .async_reset_in (async_reset)
 //`ifdef COCOTB_SIM
 //`ifndef GL_TEST
-        , .sim_resetn	(sim_resetn)
-        , .sim_set	(sim_set)
+///        , .sim_resetn	(sim_resetn)
+///        , .sim_set	(sim_set)
 //`endif
 //`endif
     );
