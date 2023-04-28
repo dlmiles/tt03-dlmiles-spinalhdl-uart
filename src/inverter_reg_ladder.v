@@ -13,7 +13,7 @@ module inverter_reg_ladder #(
     input			i,	// taps[STAGES]
 
     output			o,	// taps[0]
-    output reg	[STAGES-1:0]	taps
+    output   	[STAGES-1:0]	taps
 );
 
   reg  [STAGES-1  :0] rtaps;
