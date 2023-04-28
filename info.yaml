@@ -8,10 +8,10 @@ project:
   source_files:        
     - dff.v
     - dffqn_negedge.v
-    - sr_latch_nand.v
+    - dff_async_set.v
     - clock_stretch_invert_mux.v
     - glitch_free_clock_mux.v
-    - async_reset_ctrl.v
+    - async_reset_ctrl__dff_async_set.v
     - top_tt03_dlmiles_spinalhdl_uart.v
     - uart_dummy.v
     - Uart.v
