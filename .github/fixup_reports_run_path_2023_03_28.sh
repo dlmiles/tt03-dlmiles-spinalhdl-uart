@@ -2,6 +2,28 @@
 #
 #	This is safe to run everytime, it only edits the file if it needs editing.
 #
+#	This was fixed in 2023.04.28 with:
+#		PR: https://github.com/The-OpenROAD-Project/OpenLane/pull/1775
+#		LOG: https://github.com/The-OpenROAD-Project/OpenLane/issues/1777
+#		Fix: https://github.com/The-OpenROAD-Project/OpenLane/commit/4ced43c5f349a30e6dd1c4cf520be211b962bde8
+#
+#	Affected versions that still need this patch:
+#		2023.03.28
+#		2023.03.29
+#		2023.03.30
+#		2023.04.05
+#		2023.04.06
+#		2023.04.07
+#		2023.04.11
+#		2023.04.12
+#		2023.04.14
+#		2023.04.17
+#		2023.04.18
+#		2023.04.19
+#		2023.04.20
+#		2023.04.27
+#
+#
 #$ diff -u scripts/report/report.py~ scripts/report/report.py
 #--- scripts/report/report.py~	2023-04-26 18:58:28.000000000 +0100
 #+++ scripts/report/report.py	2023-04-26 19:35:37.091606916 +0100
