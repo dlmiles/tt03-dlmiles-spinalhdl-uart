@@ -54,7 +54,7 @@ module top_tt03_dlmiles_spinalhdl_uart (
     wire gatedTxdStopBitSupport;
 
     // This is the SpinalHDL project: uart
-    Uart uart (
+    /*Uart*/ uart_dummy uart (
         .clk                       (clk),
         .reset                     (sync_reset),
         .io_out8                   (out8),
