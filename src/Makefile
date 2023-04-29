@@ -16,7 +16,7 @@ VERILOG_SOURCES += $(PWD)/dff.v $(PWD)/dffqn_negedge.v $(PWD)/clock_stretch_inve
 VERILOG_SOURCES += $(PWD)/async_reset_ctrl__dff_async_set.v $(PWD)/dff_async_set.v
 VERILOG_SOURCES += $(PWD)/inverter_reg_ladder.v
 VERILOG_SOURCES += $(PWD)/uart_dummy.v
-#VERILOG_SOURCES += $(PWD)/Uart.v
+VERILOG_SOURCES += $(PWD)/Uart.v
 
 else
 
