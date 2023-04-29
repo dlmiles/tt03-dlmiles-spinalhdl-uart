@@ -39,7 +39,7 @@ module top_tt03_dlmiles_spinalhdl_uart (
 
     // This exists outside the SpinalHDL project as it has async properties
     // SpinalHDL is based around sync design principles that make up the bulk (99.9%) of digital designs.
-    (* keep_hierarchy = "TRUE" *) async_reset_ctrl__dff_async_set async_reset_ctrl (
+    (* keep = "TRUE" *)(* keep_hierarchy = "TRUE" *) async_reset_ctrl__dff_async_set async_reset_ctrl (
         .reset_out  	(sync_reset),
         .clk        	(clk),
         .async_reset_in (async_reset)
