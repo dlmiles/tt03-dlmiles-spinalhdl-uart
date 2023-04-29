@@ -34,12 +34,12 @@ module top_tt03_dlmiles_spinalhdl_uart (
     wire sim_resetnn;
     wire sim_sett;
 
-    (* keep_hierarchy *) inverter_reg_ladder #(.STAGES(3)) irl_sim_resetn (.clk(clk), .i(1'b1), .o(sim_resetnn), .taps(/*nc*/));
-    (* keep_hierarchy *) inverter_reg_ladder #(.STAGES(6)) irl_sim_sett   (.clk(clk), .i(1'b1), .o(sim_sett),    .taps(/*nc*/));
+    (* keep_hierarchy = "TRUE" *) inverter_reg_ladder #(.STAGES(3)) irl_sim_resetn (.clk(clk), .i(1'b1), .o(sim_resetnn), .taps(/*nc*/));
+    (* keep_hierarchy = "TRUE" *) inverter_reg_ladder #(.STAGES(6)) irl_sim_sett   (.clk(clk), .i(1'b1), .o(sim_sett),    .taps(/*nc*/));
 
     // This exists outside the SpinalHDL project as it has async properties
     // SpinalHDL is based around sync design principles that make up the bulk (99.9%) of digital designs.
-    (* keep_hierarchy *) async_reset_ctrl__dff_async_set async_reset_ctrl (
+    (* keep_hierarchy = "TRUE" *) async_reset_ctrl__dff_async_set async_reset_ctrl (
         .reset_out  	(sync_reset),
         .clk        	(clk),
         .async_reset_in (async_reset)
@@ -54,7 +54,7 @@ module top_tt03_dlmiles_spinalhdl_uart (
     wire gatedTxdStopBitSupport;
 
     // This is the SpinalHDL project: uart
-    (* keep_hierarchy *) /*Uart*/ uart_dummy uart (
+    (* keep_hierarchy = "TRUE" *) /*Uart*/ uart_dummy uart (
         .clk                       (clk),
         .reset                     (sync_reset),
         .io_out8                   (out8),
