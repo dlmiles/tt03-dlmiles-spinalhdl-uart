@@ -15,13 +15,23 @@ module async_reset_ctrl__dff_async_set (
 
     // The instance naming suffix 1,2,3,4 relates to the sequence the signal passes to get towards 'reset_out'
 
+    wire async_reset_in_triggered;
+    // This one is because the GL_TEST does not have delays
+    dff_async_set dff_async_set0 (
+      .clk   (clk),
+      .set   (async_reset_in),
+      .d     (1'b0),
+      .q     (async_reset_in_triggered)
+    );
+
     wire posedge_det_glitcher;
     wire async_reset_in_inverted;
     // How do you simulate a glitch, well you can instruct the simulator the inverter step has a delay
 //    assign #1 async_reset_in_inverted = !async_reset_in;
     (* keep = "TRUE" *)(* keep_hierarchy = "TRUE" *)  not  #1  not0  (async_reset_in_inverted,  async_reset_in);
-    assign posedge_det_glitcher = async_reset_in & async_reset_in_inverted;
+//    assign posedge_det_glitcher = async_reset_in & async_reset_in_inverted;
     // assign posedge_det_glitcher  = async_reset_in & ~async_reset_in;
+    assign posedge_det_glitcher = async_reset_in_triggered;
 
     // This is reset_out inverted, that is gate enable for posedge_det_glitcher
     wire reset_out_inverted;
