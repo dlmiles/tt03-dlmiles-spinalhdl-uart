@@ -14,12 +14,14 @@ module async_reset_ctrl__dff_async_set (
 );
 
     // The instance naming suffix 1,2,3,4 relates to the sequence the signal passes to get towards 'reset_out'
-
+    
     wire async_reset_in_triggered;
+    wire dff_async_set0__set;
+    assign #1 dff_async_set0__set = async_reset_in & !async_reset_in_triggered;
     // This one is because the GL_TEST does not have delays
     dff_async_set dff_async_set0 (
       .clk   (clk),
-      .set   (async_reset_in),
+      .set   (dff_async_set0__set),		// async_reset_in
       .d     (1'b0),
       .q     (async_reset_in_triggered)
     );
