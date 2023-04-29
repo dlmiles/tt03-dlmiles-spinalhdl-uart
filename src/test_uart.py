@@ -183,15 +183,15 @@ async def send_sequence_in8(dut, seq):
 
 # Signals we are not interesting in enumerating at the top of the log
 exclude = [
-    r'\._',
-    r'\.FILLER_',
-    r'\.PHY_',
-    r'\.TAP_',
-    r'\.VGND',
-    r'\.VNB',
-    r'\.VPB',
-    r'\.VPWR',
-    r'\.pwrgood_'
+    r'[\./]_',
+    r'[\./]FILLER_',
+    r'[\./]PHY_',
+    r'[\./]TAP_',
+    r'[\./]VGND',
+    r'[\./]VNB',
+    r'[\./]VPB',
+    r'[\./]VPWR',
+    r'[\./]pwrgood_'
 ]
 EXCLUDE_RE = dict(map(lambda k: (k,re.compile(k)), exclude))
 
