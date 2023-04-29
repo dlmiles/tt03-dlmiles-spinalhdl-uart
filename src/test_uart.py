@@ -202,6 +202,14 @@ def exclude_re_path(path: str, name: str):
             return False
     return True
 
+def resolve_GL_TEST():
+    gl_test = False
+    if 'GL_TEST' in os.environ:
+        gl_test = True
+    if 'GATES' in os.environ and os.environ['GATES'] == 'yes':
+        gl_test = True
+    return gl_test
+
 
 @cocotb.test()
 async def test_uart(dut):
@@ -216,8 +224,10 @@ async def test_uart(dut):
                 dut._log.info("{}={}".format(k, os.environ[k]))
 
     depth = None
-    #if 'GL_TEST' in os.environ:
-    #    depth = 1
+    GL_TEST = resolve_GL_TEST()
+    if GL_TEST:
+        dut._log.info("GL_TEST={} (detected)".format(GL_TEST))
+        #depth = 1
 
     report_resolvable(dut, 'initial ', depth=depth, filter=exclude_re_path)
 
@@ -267,7 +277,7 @@ async def test_uart(dut):
         await ClockCycles(dut.clk, 1)
         dut.sim_reset.value = 0
         await ClockCycles(dut.clk, 1)
-    elif design_element_exists(dut, 'dut.sync_reset'):
+    elif design_element_exists(dut, 'dut.sync_reset') and not GL_TEST:
         # GL_TEST forcing a sync reset
         # We would not need to do this if we can instruct icarus to initialize the
         #   sr_latch to any state on powerup (not X state).
