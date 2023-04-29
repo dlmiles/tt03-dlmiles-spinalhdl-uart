@@ -40,23 +40,25 @@ module uart_dummy (
         end
     end    
 
+    reg [7:0] out8;
     reg [7:0] count;
     reg run;
 
     always @ (posedge clk) begin
         if (reset) begin
-            io_out8 <= 8'h0;
+            out8 <= 8'h0;
             run <= 1;
             count <= 8'h0;
         end else if (io_in7[6] && io_in7[5] && cmd == CMD_CONFIG) begin
-            io_out8 <= 8'b10101100;
+            out8 <= 8'b10101100;
         end else if (count == 8'h0) begin
-            io_out8[6:2] <= io_out8[6:2] + 1;
+            out8[6:2] <= out8[6:2] + 1;
         end else begin
             count <= count - 1;
         end
     end
 
     assign io_gatedTxdStopBitSupport = 1'b0;
+    assign io_out8 = out8;
 
 endmodule
