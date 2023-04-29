@@ -35,7 +35,7 @@ module uart_dummy (
 
     always @ (posedge clk) begin
         io_resetCommandStrobe <= 0;
-        if (cmd == CMD_CONFIG && in7_3 == CMD_CONFIG_RESET) begin
+        if (has_cmd && has_in7_3) begin
             io_resetCommandStrobe <= 1;
         end
     end    
@@ -43,16 +43,21 @@ module uart_dummy (
     reg [7:0] out8;
     reg [7:0] count;
     reg run;
+    
+//    wire [4:0] out8_count;
+//    assign out8_count[4:0] = out8[6:2];
 
     always @ (posedge clk) begin
         if (reset) begin
             out8 <= 8'h0;
             run <= 1;
             count <= 8'h0;
-        end else if (io_in7[6] && io_in7[5] && cmd == CMD_CONFIG) begin
+        //end else if (io_in7[6] && io_in7[5] && cmd == CMD_CONFIG) begin
+        end else if (io_in7[6] && io_in7[5] && has_cmd) begin
             out8 <= 8'b10101100;
         end else if (count == 8'h0) begin
             out8[6:2] <= out8[6:2] + 1;
+            //out8_count <= out8_count + 1;
         end else begin
             count <= count - 1;
         end
