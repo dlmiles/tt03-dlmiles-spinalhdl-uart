@@ -216,8 +216,8 @@ async def test_uart(dut):
                 dut._log.info("{}={}".format(k, os.environ[k]))
 
     depth = None
-    if 'GL_TEST' in os.environ:
-        depth = 1
+    #if 'GL_TEST' in os.environ:
+    #    depth = 1
 
     report_resolvable(dut, 'initial ', depth=depth, filter=exclude_re_path)
 
@@ -239,16 +239,25 @@ async def test_uart(dut):
     print("B ele={} {}".format(try_path(ele), try_value(ele)))
     if ele:
         ele1 = design_element(ele, 'sim_reset')
-        print("B ele1={} {}".format(try_path(ele1), try_value(el1)))
+        print("B ele1={} {}".format(try_path(ele1), try_value(ele1)))
+
+    ele = design_element(dut, 'dut')
+    print("C ele={} {}".format(try_path(ele), try_value(ele)))
+    if ele:
+        ele1 = design_element(ele, 'sync_reset')
+        print("C ele1={} {}".format(try_path(ele1), try_value(ele1)))
 
     ele = design_element(dut, 'dut.sim_reset')
-    print("C ele={} {}".format(try_path(ele), try_value(ele)))
-    ele = design_element(dut, 'dut.async_reset_ctrl')
     print("D ele={} {}".format(try_path(ele), try_value(ele)))
-    ele = design_element(dut, 'dut.async_reset_ctrl.sim_reset')
+    ele = design_element(dut, 'dut.async_reset_ctrl')
     print("E ele={} {}".format(try_path(ele), try_value(ele)))
+    ele = design_element(dut, 'dut.async_reset_ctrl.sim_reset')
+    print("F ele={} {}".format(try_path(ele), try_value(ele)))
 
     await ClockCycles(dut.clk, 6)
+
+    print("design_element_exists({})={}".format('dut.sim_reset',  design_element_exists(dut, 'dut.sim_reset')))
+    print("design_element_exists({})={}".format('dut.sync_reset', design_element_exists(dut, 'dut.sync_reset')))
 
     # signal not present during GL_TEST
     if design_element_exists(dut, 'dut.sim_reset'):
@@ -272,7 +281,9 @@ async def test_uart(dut):
     await ClockCycles(dut.clk, 6)
 
     ele = design_element(dut, 'dut.sim_reset')
-    print("F ele={} {}".format(try_path(ele), try_value(ele)))
+    print("GG ele={} {}".format(try_path(ele), try_value(ele)))
+    ele = design_element(dut, 'dut.sync_reset')
+    print("HH ele={} {}".format(try_path(ele), try_value(ele)))
 
     report_resolvable(dut, depth=depth, filter=exclude_re_path)
 
