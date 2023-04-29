@@ -49,11 +49,10 @@ module uart_dummy (
             out8 <= 8'h0;
             run <= 1;
             count <= 8'h0;
-        //end else if (io_in7[6] && io_in7[5] && cmd == CMD_CONFIG) begin
         end else if (io_in7[6] && io_in7[5] && has_cmd) begin
             out8 <= 8'b10101100;
             run <= 1;
-            count <= 8'h0;
+            count <= 8'h11100111;
         end else if (count == 8'h0) begin
             out8[6:2] <= out8[6:2] + 1;
             count <= count - 1;
