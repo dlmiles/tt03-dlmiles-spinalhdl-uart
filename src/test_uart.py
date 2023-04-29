@@ -70,7 +70,7 @@ def try_value(v):
         return v.value
     return str(v)
 
-def report_resolvable(dut, pfx = None, node = None, depth = None):
+def report_resolvable(dut, pfx = None, node = None, depth = None, filter = None):
     if depth is None:
         depth = 3
     if depth < 0:
@@ -83,11 +83,13 @@ def report_resolvable(dut, pfx = None, node = None, depth = None):
         pfx = ""
     for design_element in node:
         if isinstance(design_element, cocotb.handle.ModifiableObject):
-            dut._log.info("{}{} = {}".format(pfx, design_element._name, design_element.value))
+            if filter is None or filter(design_element._path, design_element._name):
+                dut._log.info("{}{} = {}".format(pfx, design_element._name, design_element.value))
         elif isinstance(design_element, cocotb.handle.HierarchyObject) and depth > 0:
-            report_resolvable(dut, pfx + try_name(design_element) + '.', design_element, depth - 1)	# recurse 
+            report_resolvable(dut, pfx + try_name(design_element) + '.', design_element, depth=depth - 1, filter=filter)	# recurse
         else:
-            dut._log.info("{}{} = {}".format(pfx, try_name(design_element), type(design_element)))
+            if filter is None or filter(design_element._path, design_element._name):
+                dut._log.info("{}{} = {}".format(pfx, try_name(design_element), type(design_element)))
     pass
 
 
@@ -179,6 +181,28 @@ async def send_sequence_in8(dut, seq):
 ###
 ###
 
+# Signals we are not interesting in enumerating at the top of the log
+exclude = [
+    r'\._',
+    r'\.FILLER_',
+    r'\.PHY_',
+    r'\.TAP_',
+    r'\.VGND',
+    r'\.VNB',
+    r'\.VPB',
+    r'\.VPWR',
+    r'\.pwrgood_'
+]
+EXCLUDE_RE = dict(map(lambda k: (k,re.compile(k)), exclude))
+
+def exclude_re_path(path: str, name: str):
+    for v in EXCLUDE_RE.values():
+        if v.search(path):
+            print("EXCLUDED={}".format(path))
+            return False
+    return True
+
+
 @cocotb.test()
 async def test_uart(dut):
     dut._log.info("start")
@@ -198,7 +222,7 @@ async def test_uart(dut):
     if 'GL_TEST' in os.environ:
         depth = 1
 
-    report_resolvable(dut, 'initial ', depth=depth)
+    report_resolvable(dut, 'initial ', depth=depth, filter=exclude_re_path)
 
     await ClockCycles(dut.clk, 1)
     dut.in7.value = 0
@@ -253,7 +277,7 @@ async def test_uart(dut):
     ele = design_element(dut, 'dut.sim_reset')
     print("F ele={} {}".format(try_path(ele), try_value(ele)))
 
-    report_resolvable(dut, depth=depth)
+    report_resolvable(dut, depth=depth, filter=exclude_re_path)
 
     # Perform reset sequence
     reset_seq = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
@@ -271,7 +295,7 @@ async def test_uart(dut):
         count += 1
     dut._log.info("{} count={}".format(filename, count))
 
-    report_resolvable(dut)
+    report_resolvable(dut, filter=exclude_re_path)
 
 
 class RomReader():
