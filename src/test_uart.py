@@ -198,7 +198,7 @@ EXCLUDE_RE = dict(map(lambda k: (k,re.compile(k)), exclude))
 def exclude_re_path(path: str, name: str):
     for v in EXCLUDE_RE.values():
         if v.search(path):
-            print("EXCLUDED={}".format(path))
+            #print("EXCLUDED={}".format(path))
             return False
     return True
 
@@ -209,7 +209,7 @@ async def test_uart(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
-    dumpvars = ['CI', 'GL_TEST', 'FUNCTIONAL', 'USE_POWER_PINS', 'SIM', 'UNIT_DELAY', 'USER']
+    dumpvars = ['CI', 'GL_TEST', 'FUNCTIONAL', 'USE_POWER_PINS', 'SIM', 'UNIT_DELAY', 'SIM_BUILD', 'GATES', 'ICARUS_BIN_DIR', 'COCOTB_RESULTS_FILE', 'TESTCASE', 'TOPLEVEL']
     if 'CI' in os.environ and os.environ['CI'] == 'true':
         dut._log.info("CI".format(os.environ['CI']))
         for k in os.environ.keys():
