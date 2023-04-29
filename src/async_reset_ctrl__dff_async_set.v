@@ -5,7 +5,7 @@
 //  The reset_out is maintained for at least 2 CLK posedge.
 //
 //
-(* keep_hierarchy *)
+(* keep_hierarchy = "true" *)
 module async_reset_ctrl__dff_async_set (
     output			reset_out,
 
