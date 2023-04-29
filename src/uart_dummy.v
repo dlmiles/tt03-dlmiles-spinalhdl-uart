@@ -10,10 +10,10 @@
 module uart_dummy (
     input				clk,
     input				reset,
-    output reg		[7:0]		io_out8,
+    output /*reg*/	[7:0]		io_out8,
     input		[6:0]		io_in7,
     output reg				io_resetCommandStrobe,	// can be a wire ?
-    output reg				io_gatedTxdStopBitSupport
+    output /*reg*/			io_gatedTxdStopBitSupport
 );
 
     localparam CMD_DATA		= 2'd0;

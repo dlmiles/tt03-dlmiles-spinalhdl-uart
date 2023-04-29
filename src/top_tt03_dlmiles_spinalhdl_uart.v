@@ -34,12 +34,12 @@ module top_tt03_dlmiles_spinalhdl_uart (
     wire sim_resetnn;
     wire sim_sett;
 
-    inverter_reg_ladder #(.STAGES(3)) irl_sim_resetn (.clk(clk), .i(1'b1), .o(sim_resetnn), .taps(/*nc*/));
-    inverter_reg_ladder #(.STAGES(6)) irl_sim_sett   (.clk(clk), .i(1'b1), .o(sim_sett),    .taps(/*nc*/));
+    (* keep_hierarchy = "true" *) inverter_reg_ladder #(.STAGES(3)) irl_sim_resetn (.clk(clk), .i(1'b1), .o(sim_resetnn), .taps(/*nc*/));
+    (* keep_hierarchy = "true" *) inverter_reg_ladder #(.STAGES(6)) irl_sim_sett   (.clk(clk), .i(1'b1), .o(sim_sett),    .taps(/*nc*/));
 
     // This exists outside the SpinalHDL project as it has async properties
     // SpinalHDL is based around sync design principles that make up the bulk (99.9%) of digital designs.
-    async_reset_ctrl__dff_async_set async_reset_ctrl (
+    (* keep_hierarchy = "true" *) async_reset_ctrl__dff_async_set async_reset_ctrl (
         .reset_out  	(sync_reset),
         .clk        	(clk),
         .async_reset_in (async_reset)
