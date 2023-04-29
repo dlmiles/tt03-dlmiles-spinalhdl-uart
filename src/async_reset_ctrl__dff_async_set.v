@@ -19,14 +19,14 @@ module async_reset_ctrl__dff_async_set (
     wire async_reset_in_inverted;
     // How do you simulate a glitch, well you can instruct the simulator the inverter step has a delay
 //    assign #1 async_reset_in_inverted = !async_reset_in;
-    not  #1  not0  (async_reset_in_inverted,  async_reset_in);
+    (* keep = "true" *)  not  #1  not0  (async_reset_in_inverted,  async_reset_in);
     assign posedge_det_glitcher = async_reset_in & async_reset_in_inverted;
     // assign posedge_det_glitcher  = async_reset_in & ~async_reset_in;
 
     // This is reset_out inverted, that is gate enable for posedge_det_glitcher
     wire reset_out_inverted;
 //    assign #1 reset_out_inverted = !reset_out;
-    not  #1  not1  (reset_out_inverted, reset_out);
+    (* keep = "true" *)  not  #1  not1  (reset_out_inverted, reset_out);
     // The purpose of this is to inhibit any output from posedge_det_glitcher
     //  while we are in a reset_out=1 output condition.  This has the effect
     //  of prioritzing the rearm process allowing.
@@ -38,7 +38,7 @@ module async_reset_ctrl__dff_async_set (
     wire dffas2q;
     wire dffas2q_inverted;
 //    assign #1 dffas2q_inverted = !dffas2q;
-    not  #1  not2  (dffas2q_inverted, dffas2q);
+    (* keep = "true" *)  not  #1  not2  (dffas2q_inverted, dffas2q);
 
     // When changing the implementation to using dff_async_set instead of sr_latch_nand
     // The reset_out=1 pulse was too short having only one edge in some scenarios,
