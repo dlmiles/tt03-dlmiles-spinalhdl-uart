@@ -211,12 +211,9 @@ async def test_uart(dut):
 
     dumpvars = ['CI', 'GL_TEST', 'FUNCTIONAL', 'USE_POWER_PINS', 'SIM', 'UNIT_DELAY', 'SIM_BUILD', 'GATES', 'ICARUS_BIN_DIR', 'COCOTB_RESULTS_FILE', 'TESTCASE', 'TOPLEVEL']
     if 'CI' in os.environ and os.environ['CI'] == 'true':
-        dut._log.info("CI".format(os.environ['CI']))
         for k in os.environ.keys():
             if k in dumpvars:
                 dut._log.info("{}={}".format(k, os.environ[k]))
-            else:
-                dut._log.info("{}".format(k))
 
     depth = None
     if 'GL_TEST' in os.environ:
