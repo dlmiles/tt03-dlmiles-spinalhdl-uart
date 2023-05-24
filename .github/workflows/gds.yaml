@@ -192,7 +192,7 @@ jobs:
             runs/wokwi/reports/synthesis/1-synthesis.AREA 0.stat.rpt
 
     - name: upload artifact
-      if: success() && false	## disabled as getting duplicate out
+      if: success() ## && false	## disabled as getting duplicate out
       uses: actions/upload-artifact@v3
       with:
           # path depends on the tag and the module name
