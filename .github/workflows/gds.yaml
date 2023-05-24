@@ -55,6 +55,7 @@ permissions:
 #   Error: /work/runs/wokwi/tmp/15-top_tt03_dlmiles_spinalhdl_uart.nl.v line 555, syntax error, unexpected ID, expecting ';' or ','
 # 2023.04.27	# SAME PARSE ERROR
 # 2023.04.28	# SAME PARSE ERROR
+# 2023.05.03
 
 jobs:
   gds:
@@ -62,11 +63,11 @@ jobs:
     env:
         #OPENLANE_TAG:           2023.02.14
         #OPENLANE_TAG:           2023.03.22
-        OPENLANE_TAG:           2023.04.18
-        #OPENLANE_TAG:           2023.04.27#
+        #OPENLANE_TAG:           2023.04.18
+        OPENLANE_TAG:           2023.05.03
         #OPENLANE_IMAGE_NAME:    efabless/openlane:2023.04.20
-        OPENLANE_IMAGE_NAME:    efabless/openlane:2023.04.18
-        #OPENLANE_IMAGE_NAME:    efabless/openlane:2023.04.27
+        #OPENLANE_IMAGE_NAME:    efabless/openlane:2023.04.18
+        OPENLANE_IMAGE_NAME:    efabless/openlane:2023.05.03
         # 2023.02.13
         #OPENLANE_IMAGE_NAME:    efabless/openlane:4cd0986b3ae550cdf7a6d0fba4e0657012f635d8-amd64
         OPENLANE_ROOT:          /home/runner/openlane
